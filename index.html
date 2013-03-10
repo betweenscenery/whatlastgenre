@@ -36,36 +36,35 @@
 <p>Improves genre metadata of audio files based on tags from various music sites.</p>
 
 <ul>
-<li>Supported audio files: flac, ogg, mp3</li>
-<li>Supported music sites: What, Last.FM, MusicBrainz, Discogs</li>
+<li>Supported audio files: flac, ogg, mp3, m4a</li>
+<li>Supported music sites: WhatCD, LastFM, MusicBrainz, Discogs, EchoNest, Idiomag </li>
 <li>Feature Overview
 
 <ul>
-<li>Gets genre tags from various music sites and merges, splits, filters and
-scores them.
+<li>Gets genre tags for artists and albums from music sites and finds the
+most eligibles ones by merging, splitting, filtering and scoring them.
 
 <ul>
-<li>Merges similar tags in different writings, eg.
-DnB, D&amp;B, Drum and Bass -&gt; Drum &amp; Bass</li>
-<li>Splitting by common separators, eg. Jazz+Funk -&gt; Jazz, Funk;
-Rock/Pop -&gt; Rock, Pop; Jazz&amp;Funk+Rock -&gt; Jazz, Funk, Rock</li>
-<li>Splitting by space if tag contains specific parts,
-like Alternative, Progressive, etc. (see tags.txt)</li>
-<li>Filters them by personal preferences and preset or custom filters</li>
-<li>Scores them with different methods while taking personal
-preferences into account</li>
+<li>Merges similar tags in different writings to ensure consistent names,
+eg. DnB, D&amp;B, Drum and Bass -&gt; Drum &amp; Bass;
+Alt., Altern, Alterneitif -&gt; Alternative</li>
+<li>Splits tags in various applicable ways, eg.
+Jazz/Funk&amp;Rock -&gt; Jazz, Funk, Rock;
+Alternative Rock -&gt; Alternative, Rock</li>
+<li>Filters by personal preferences and preset or custom filters</li>
+<li>Scores tas while taking personal preferences into account</li>
 </ul>
 </li>
 <li>Caches all data received from music sites to make reruns super fast</li>
 <li>Makes use of MusicBrainz IDs when possible and recognizes invalid ones</li>
-<li>Optional: saves release type (Album, EP, Anthology, ...) (from What)</li>
-<li>Optional: saves MusicBrainz IDs</li>
+<li>Optional: gets release type (Album, EP, Anthology, ...) (from What)</li>
+<li>Optional: gets MusicBrainz IDs</li>
 <li>Interactive mode, especially for release types and MBIDs
 (it's not guessing wrong data)
 
 <ul>
 <li>Progressive fuzzy matching to reduce needed user input</li>
-<li>eg. MusicBrainz: Tries to identify artists by looking at its albums </li>
+<li>MusicBrainz: Tries to identify artists by looking at its albums </li>
 </ul>
 </li>
 <li>Dry-mode for safe testing</li>
@@ -75,62 +74,31 @@ preferences into account</li>
 
 <p>It scans through folders for albums and receives genre tags for them and their
 artists from different music sites. Equal tags in different writings will be
-merged together. Tags containing seperators or specific parts will get split
-up. The tags get filtered, scored and put together, then the best scored tags
-will be saved as genre metadata in the corresponding album tracks.</p>
+merged together to ensure proper scoring and consistent names. Tags containing
+separators, too many words or specific parts will get split up. The tags get
+filtered and scored. Artist and album tags get stored separately at first, but
+get merged in the end and the best scored tags will be saved as genre metadata
+in the corresponding album tracks. All data received from music sites will get
+cached after pre-filtering so that rerunning the script will be super fast.
+There are several score multipliers to adjust the scoring to your needs and
+take your personal preferences into account. Please take a look at
+"Configuration options explained" below for more details.</p>
 
-<h3>Tags scoring with count (Last.FM, MusicBrainz, What partially)</h3>
+<h3>Basic Scoring</h3>
+
+<h4>Tags scoring with count (Last.FM, MusicBrainz, Idiomag, What partially)</h4>
 
 <p>If counts are supplied for the tags they will get scored by <code>count/topcount</code>,
 where <code>topcount</code> is the highest count of all tags from a source. So the top
-tag gets a score of <code>1.0</code>, a tag having only half of the top tag's count gets
-a score of <code>0.5</code> and so on. </p>
+tag gets a score of 1.0, a tag having only half of the top tag's count gets
+a score of 0.5 and so on. </p>
 
-<h3>Tags scoring without count (Discogs, What partially)</h3>
+<h4>Tags scoring without count (Discogs, EchoNest, What partially)</h4>
 
 <p>Tags supplied without a count will be scored <code>0.85^(n-1)</code>, where <code>n</code> is the
-total number of tags supplied by this source. The more tags the lower the
-score for each tag will be. So if only one tag is supplied, it will get a
-score of <code>1.0</code>, two tags will get a score of <code>0.85</code> each, three get <code>0.72</code>
-each and so on...</p>
-
-<h3>Score multiplier/modifier</h3>
-
-<h4>Score multiplier for different sources</h4>
-
-<p>Every source has its own score multiplier, so sources that generally provide
-higher quality tags can be given advantage over sources that often provide
-bad, inaccurate or personal tags.</p>
-
-<h4>Split score multiplier</h4>
-
-<p>There is a score multiplier for modifying the score of the base tag from a tag
-that got split up by space, this enables you to decide whether to keep, prefer
-or ban the base tags. For example, lets say we have 'Alternative Rock' with a
-score of <code>1</code>. It will end up as Alternative with score <code>1</code>, Rock with score <code>1</code>
-and Alternative Rock with score <code>1 * &lt;splitscore&gt;</code>. So if you don't want to
-keep Alternative Rock, just set it to 0. </p>
-
-<h4>Artist score multiplier</h4>
-
-<p>There is an extra multiplier for tags gathered by searching for artists to
-enable multiple albums from one artist getting more equal tags.</p>
-
-<h4>Personal score modifiers</h4>
-
-<p>One can set a list of tags that will get a multiplier bonus. Consider this as
-some kind of "soft" white-/blacklist, where you can reduce the occurrence of
-hated or inaccurate tags without fully banning them.</p>
-
-<p>See Configuration for more details.
-If you have any ideas on improving this scoring, please let me know :)</p>
-
-<h3>Caching</h3>
-
-<p>All data received from music sites will get cached after prefiltering so that
-rerunning the script will be super fast. The hardcoded cache timeout is 7 days.
-The cache gets saved to disk every 10 minutes and will get cleaned up at the
-end of the script. Remove the cache file to manually reset the cache.</p>
+total number of tags supplied by this source. The more tags the lower the score
+for each tag will be. So if only one tag is supplied, it will get a score of
+1.0, two tags will get a score of 0.85 each, three get 0.72 each and so on...</p>
 
 <h2>Installation</h2>
 
@@ -142,105 +110,153 @@ needed dependencies (musicbrainzngs, mutagen, requests):</p>
 
 <h2>Configuration</h2>
 
-<p>An empty configuration file will be created on the first run. Make sure to
-check if your config file needs to be updated after installing a new version
-(although there shouldn't be much config file changes).</p>
+<p>A configuration file with default values will be created on first run.</p>
 
 <h3>Example configuration file</h3>
 
-<pre><code>[whatcd]
-username = whatusername
-password = whatpassword
+<pre><code>[wlg]
+sources = whatcd, mbrainz, discogs, echonest, lastfm, idiomag
+tagsfile = tags.txt
+cache_timeout = 7
+cache_saveint = 10
+whatcduser = whatusername
+whatcdpass = whatpassword
 [genres]
-blacklist = charts, other, unknown
-score_up = soundtrack
-score_down = alternative, electronic, indie
-filters = instrument, label, location, year
+love = soundtrack
+hate = alternative, electronic, indie, pop, rock
+blacklist = charts, male vocalists, other
+filters = instrument, label, location, name, year
 [scores]
-what.cd = 1.66
-last.fm = 0.66
-mbrainz = 1.00
-discogs = 1.00
-artists = 1.33
+src_whatcd = 1.66
+src_lastfm = 0.66
+src_mbrainz = 1.00
+src_discogs = 1.00
+src_idiomag = 1.00
+src_echonest = 1.00
+artist = 1.33
 splitup = 0.33
-userset = 0.66
 </code></pre>
 
 <h3>Configuration options explained</h3>
 
+<h4>whatlastgenre (wlg) section</h4>
+
+<h5>sources option</h5>
+
+<p>The music sites/data providers where to get the tags from. Will be called in
+the order you named them, since lastfm supports search by MBIDs make sure to
+mention mbrainz before lastfm. You should generally mention sources with good
+spelled tags (eg. sources with a fixed set of possible genres) before sources
+with misspelled tags (eg. lastfm user tags) to avoid getting malformed tags.
+Disabling music sites is not recommended, the more sources the better tags.</p>
+
+<ul>
+<li>
+<code>whatcd</code> [<a href="https://what.cd/">URL</a>]
+well-kept tags from users</li>
+<li>
+<code>lastfm</code> [<a href="http://www.last.fm/">URL</a>]
+mbid search possible, many inaccurate and personal tags from users</li>
+<li>
+<code>mbrainz</code> [<a href="http://musicbrainz.org/">URL</a>]
+home of mbids</li>
+<li>
+<code>discogs</code> [<a href="http://www.idiomag.com/">URL</a>]
+album search only, fixed list of <a href="http://www.discogs.com/help/submission-guidelines-release-genres-styles.html">genres</a> and <a href="http://wiki.discogs.com/index.php/Style_Guide">styles</a>
+</li>
+<li>
+<code>idiomag</code> [<a href="http://www.idiomag.com/">URL</a>]
+artist search only </li>
+<li>
+<code>echonest</code> [<a href="http://echonest.com/">URL</a>]
+artist search only, fixed list of <a href="http://developer.echonest.com/docs/v4/artist.html#list-genres">genres</a>
+</li>
+</ul><h5>tagsfile option</h5>
+
+<p>Path to the tags.txt file. Use an absolute path here if you have problems
+accessing the tagsfile by default.</p>
+
+<h5>cache_timout option</h5>
+
+<p>Time in days after which cache hits get invalid.
+Default <code>7</code>, Range <code>3 - 90</code></p>
+
+<h5>cache_saveint option</h5>
+
+<p>Interval in minutes to save the cache during runtime.
+Default <code>10</code>, Range <code>5 - 60</code></p>
+
 <h4>genres section</h4>
 
-<h5>score_up, score_down option</h5>
+<h5>love and hate options</h5>
 
-<p>This should be considered as "soft" white-/blacklist where you can in-/decrease
-the occurrence of specific tags that you don't like or that are too inaccurate
-for you without fully banning them like with the blacklist option. Tags listed
-here will get a score bonus based on the configured multiplier.</p>
+<p>List of tags that get a multiplier bonus of <code>2.0</code> and <code>0.5</code> respectively.
+Should be considered as "soft" white-/blacklist where you can in-/decrease the
+occurrence of specific tags that you don't like or that are too inaccurate for
+you without fully banning them like with the blacklist option.</p>
 
-<h5>filters</h5>
+<h5>filters option</h5>
 
 <p>Use this to activate filtering of specific tag groups from genres:</p>
 
 <ul>
-<li>instrument: filters instrument related names, like piano or guitarist</li>
-<li>label: filters label names</li>
-<li>location: filters country, city and nationality names</li>
-<li>year: filters year tags, like 1980s</li>
+<li>
+<code>instrument</code> filters instrument related names, like piano or guitarist</li>
+<li>
+<code>label</code> filters label names</li>
+<li>
+<code>location</code> filters country, city and nationality names</li>
+<li>
+<code>year</code> filters year tags, like 1980s</li>
 <li>create your own filter lists by adding filter sections to the tags.txt file,
 consider them as large blacklists.</li>
 </ul><h4>scores section</h4>
 
-<p>Be careful when adjusting the score multipliers, setting them out of a
-reasonable range may lead to unexpected results and bad tags.
-Don't set them to negative values!</p>
+<h5>src_* options</h5>
 
-<h5>what.cd, last.fm, mbrainz, discogs</h5>
+<p>Every source has its own score multiplier, so music sites that generally
+provide higher quality tags can be given advantage over sources that often
+provide bad, inaccurate or personal tags. Increase if you trust the tags from
+a source, lower if the source provides many inaccurate or personal tags. If you
+don't want tags from a specific source remove it from the sources list option.
+Default <code>1.0</code>, Range <code>0.5 - 2.0</code>. See sources option above.</p>
 
-<p>Score multipliers for the different sources. Default <code>1.0</code>, increase if you
-trust the tags from a source, lower if the source provides many inaccurate or
-personal tags. Should be between <code>0.5</code> and <code>2.0</code>. If you dont want tags from a
-specific source you should use the --no- commandline option instead of
-setting it to <code>0.0</code>.</p>
+<h5>artist option</h5>
 
-<h5>artists</h5>
-
-<p>Score multiplier for tags found by artist/albumartist searches.
-This enables that multiple albums from one artist get more equal tags.</p>
-
-<ul>
-<li>
-<code>&lt;0.5</code>: not recommended</li>
-<li>
-<code>&lt;1.0</code>: prefer album tags</li>
-<li>
-<code>=1.0</code>: no difference between album and artist tags</li>
-<li>
-<code>&gt;1.0</code>: prefer artist tags</li>
-<li>
-<code>&gt;2.0</code>: not recommended</li>
-</ul><h5>splitup</h5>
-
-<p>Score multiplier for the "base"-tag of tags that got split up.</p>
+<p>Score multiplier to give tags found by artist/albumartist searches advantage
+over tags from album searches. The tags get stored separately at first but
+then put together while taking this multiplier into account. This enables
+that multiple albums from one artist get more equal tags.
+Default <code>1.33</code>, Range <code>0.5 - 2.0</code></p>
 
 <ul>
 <li>
-<code>=0.0</code>: forget about the "base" tags</li>
+<code>&lt; 1.0</code> prefer album tags</li>
 <li>
-<code>&lt;1.0</code>: prefer split parts</li>
+<code>= 1.0</code> no difference between album and artist tags</li>
 <li>
-<code>=1.0</code>: handle them equally</li>
+<code>&gt; 1.0</code> prefer artist tags</li>
+</ul><h5>splitup option</h5>
+
+<p>Score multiplier for modifying the score of the base tag from a tag that got
+split up by space, this enables you to decide whether to keep, prefer or ban
+the base tags. For example, lets say we have 'Alternative Rock' with a score
+of 1: It will end up as Alternative with score 1, Rock with score 1 and
+Alternative Rock with score <code>1 * &lt;splitup-score&gt;</code>. So if you don't want to keep
+Alternative Rock, just set it to 0, but consider using a very small number
+instead to avoid banning them totally.
+Default <code>0.33</code>, Range <code>0.0 - 1.0</code></p>
+
+<ul>
 <li>
-<code>&gt;1.0</code>: not recommended
-Consider using a very small number instead of <code>0</code> if you don't like the base
-tags to avoid banning them totally.</li>
-</ul><h5>userset</h5>
+<code>= 0.0</code> forget about the "base" tags</li>
+<li>
+<code>&lt; 1.0</code> prefer split parts</li>
+<li>
+<code>= 1.0</code> handle them equally</li>
+</ul><h2>Usage</h2>
 
-<p><code>1+/-x</code> score multiplier for tags set in score_{up,down}</p>
-
-<h2>Usage</h2>
-
-<pre><code>usage: whatlastgenre.py [-h] [-v] [-n] [-i] [-r] [-m] [-l N] [--no-whatcd]
-                        [--no-lastfm] [--no-mbrainz] [--no-discogs]
+<pre><code>usage: whatlastgenre.py [-h] [-v] [-n] [-c] [-i] [-r] [-m] [-l N]
                         [--config CONFIG] [--cache CACHE]
                         path [path ...]
 
@@ -251,26 +267,25 @@ optional arguments:
   -h, --help           show this help message and exit
   -v, --verbose        more detailed output (default: False)
   -n, --dry            don't save metadata (default: False)
+  -c, --cacheignore    ignore cache hits (default: False)
   -i, --interactive    interactive mode (default: False)
   -r, --tag-release    tag release type (from What) (default: False)
   -m, --tag-mbids      tag musicbrainz ids (default: False)
   -l N, --tag-limit N  max. number of genre tags (default: 4)
-  --no-whatcd          disable lookup on What.CD (default: False)
-  --no-lastfm          disable lookup on Last.FM (default: False)
-  --no-mbrainz         disable lookup on MBrainz (default: False)
-  --no-discogs         disable lookup on Discogs (default: False)
   --config CONFIG      location of the configuration file (default: ~/.whatlastgenre/config)
   --cache CACHE        location of the cache file (default: ~/.whatlastgenre/cache)
 </code></pre>
 
-<p>If you seriously want to tag release-types (-r) or musicbrainz-ids (-m) you
-should also enable interactive mode (-i). Consider to save the mbids (-m) when
-not using --no-mbrainz, you searched for them, why not save them? ;)
-Disabling music-sites is not recommended, the more sources the better tags.</p>
+<p>If you seriously want to tag release-types <code>-r</code> or musicbrainz-ids <code>-m</code> you
+should also enable interactive mode <code>-i</code>. Consider to save the MBIDs <code>-m</code> when
+using mbrainz, you searched for them, why not save them? ;)</p>
 
 <p>I recommend first doing a dry-run to fill the cache and then doing a normal
 run with interactivity enabled. This way you can answer all interactivity
 questions without much waiting time in between.</p>
+
+<p>Remove the cache file to reset the cache. If you only want to reset the cache
+for specific albums rerun with <code>-c</code> on this albums to ignore cache hits.</p>
 
 <h3>Examples</h3>
 
@@ -289,30 +304,22 @@ questions without much waiting time in between.</p>
 <pre><code>$ whatlastgenre.py -irml 5 /home/user/music /media/music
 </code></pre>
 
-<h3>Ended up with a tag that shouldn't be there?</h3>
-
-<ul>
-<li>If it's an impartial correct tag, just use score_down or blacklist to get
-rid of it.</li>
-<li>If it's an instrument, label or location tag that should have been filtered,
-please name it to me so i can add it to the tags.txt file.</li>
-<li>If the tag is personal, crappy or somehow else bad, just talk to me and i'll
-try to improve the scoring by adding it to the generic filter.</li>
-</ul><h2>How to help</h2>
+<h2>How to help</h2>
 
 <p>Thanks for being interested in helping to improve it :)
 Things you can tell me about:</p>
 
 <ul>
-<li>Tag that are similar but haven't been merged or naming inconsistencies,
-e.g. 'Trip Hop' &lt;-&gt; 'Trip-Hop'</li>
+<li>Tag naming inconsistencies</li>
+<li>Tags that are similar but haven't been merged together</li>
 <li>Tags that doesn't get split but should, or do get split but shouldn't</li>
-<li>Tags that get filtered but shouldn't</li>
+<li>Tags that get filtered out but shouldn't (!)</li>
 <li>If your unhappy with the tag results</li>
 <li>Did i miss something in tags.txt?</li>
 <li>Any errors of course ;)</li>
 </ul><p>I'm also happy for any other kind of suggestions or just send me your tags
-statistics output for a <code>-nl 10</code>-run, i'll try to improve tags.txt with it. :)</p>
+statistics output for a <code>-nl 10</code>-run (please append your config if it differs
+much from the default one), i'll try to improve tags.txt with it. :)</p>
       </section>
     </div>
 
