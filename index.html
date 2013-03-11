@@ -197,17 +197,17 @@ you without fully banning them like with the blacklist option.</p>
 
 <h5>filters option</h5>
 
-<p>Use this to activate filtering of specific tag groups from genres:</p>
+<p>Use this to activate filters for specific tag groups:</p>
 
 <ul>
 <li>
-<code>instrument</code> filters instrument related names, like piano or guitarist</li>
+<code>instrument</code> instrument related names, like piano or guitarist</li>
 <li>
-<code>label</code> filters label names</li>
+<code>label</code> label names</li>
 <li>
-<code>location</code> filters country, city and nationality names</li>
+<code>location</code> country, city and nationality names</li>
 <li>
-<code>year</code> filters year tags, like 1980s</li>
+<code>year</code> year tags, like 1980s</li>
 <li>create your own filter lists by adding filter sections to the tags.txt file,
 consider them as large blacklists.</li>
 </ul><h4>scores section</h4>
@@ -233,7 +233,7 @@ Default <code>1.33</code>, Range <code>0.5 - 2.0</code></p>
 <li>
 <code>&lt; 1.0</code> prefer album tags</li>
 <li>
-<code>= 1.0</code> no difference between album and artist tags</li>
+<code>= 1.0</code> handle them equally</li>
 <li>
 <code>&gt; 1.0</code> prefer artist tags</li>
 </ul><h5>splitup option</h5>
@@ -272,8 +272,10 @@ optional arguments:
   -r, --tag-release    tag release type (from What) (default: False)
   -m, --tag-mbids      tag musicbrainz ids (default: False)
   -l N, --tag-limit N  max. number of genre tags (default: 4)
-  --config CONFIG      location of the configuration file (default: ~/.whatlastgenre/config)
-  --cache CACHE        location of the cache file (default: ~/.whatlastgenre/cache)
+  --config CONFIG      location of the configuration file
+                       (default: ~/.whatlastgenre/config)
+  --cache CACHE        location of the cache file
+                       (default: ~/.whatlastgenre/cache)
 </code></pre>
 
 <p>If you seriously want to tag release-types <code>-r</code> or musicbrainz-ids <code>-m</code> you
