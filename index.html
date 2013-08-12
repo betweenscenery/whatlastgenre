@@ -31,7 +31,8 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h1>whatlastgenre</h1>
+        <h1>
+<a name="whatlastgenre" class="anchor" href="#whatlastgenre"><span class="octicon octicon-link"></span></a>whatlastgenre</h1>
 
 <p>Improves genre metadata of audio files based on tags from various music sites.</p>
 
@@ -42,7 +43,7 @@
 
 <ul>
 <li>Gets genre tags for artists and albums from music sites and finds the
-most eligibles ones by merging, splitting, filtering and scoring them.
+most eligible ones by merging, splitting, filtering and scoring them.
 
 <ul>
 <li>Merges similar tags in different writings to ensure consistent names,
@@ -52,7 +53,7 @@ Alt., Altern, Alterneitif -&gt; Alternative</li>
 Jazz/Funk&amp;Rock -&gt; Jazz, Funk, Rock;
 Alternative Rock -&gt; Alternative, Rock</li>
 <li>Filters by personal preferences and preset or custom filters</li>
-<li>Scores tas while taking personal preferences into account</li>
+<li>Scores tags while taking personal preferences into account</li>
 </ul>
 </li>
 <li>Caches all data received from music sites to make reruns super fast</li>
@@ -70,7 +71,8 @@ Alternative Rock -&gt; Alternative, Rock</li>
 <li>Dry-mode for safe testing</li>
 </ul>
 </li>
-</ul><h2>How it works</h2>
+</ul><h2>
+<a name="how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>How it works</h2>
 
 <p>It scans through folders for albums and receives genre tags for them and their
 artists from different music sites. Equal tags in different writings will be
@@ -84,23 +86,27 @@ There are several score multipliers to adjust the scoring to your needs and
 take your personal preferences into account. Please take a look at
 "Configuration options explained" below for more details.</p>
 
-<h3>Basic Scoring</h3>
+<h3>
+<a name="basic-scoring" class="anchor" href="#basic-scoring"><span class="octicon octicon-link"></span></a>Basic Scoring</h3>
 
-<h4>Tags scoring with count (Last.FM, MusicBrainz, Idiomag, What partially)</h4>
+<h4>
+<a name="tags-scoring-with-count-lastfm-musicbrainz-idiomag-what-partially" class="anchor" href="#tags-scoring-with-count-lastfm-musicbrainz-idiomag-what-partially"><span class="octicon octicon-link"></span></a>Tags scoring with count (Last.FM, MusicBrainz, Idiomag, What partially)</h4>
 
 <p>If counts are supplied for the tags they will get scored by <code>count/topcount</code>,
 where <code>topcount</code> is the highest count of all tags from a source. So the top
 tag gets a score of 1.0, a tag having only half of the top tag's count gets
 a score of 0.5 and so on. </p>
 
-<h4>Tags scoring without count (Discogs, EchoNest, What partially)</h4>
+<h4>
+<a name="tags-scoring-without-count-discogs-echonest-what-partially" class="anchor" href="#tags-scoring-without-count-discogs-echonest-what-partially"><span class="octicon octicon-link"></span></a>Tags scoring without count (Discogs, EchoNest, What partially)</h4>
 
 <p>Tags supplied without a count will be scored <code>0.85^(n-1)</code>, where <code>n</code> is the
 total number of tags supplied by this source. The more tags the lower the score
 for each tag will be. So if only one tag is supplied, it will get a score of
 1.0, two tags will get a score of 0.85 each, three get 0.72 each and so on...</p>
 
-<h2>Installation</h2>
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>You'll need Python 2.7. Running the following should automatically install all
 needed dependencies (musicbrainzngs, mutagen, requests):</p>
@@ -108,11 +114,13 @@ needed dependencies (musicbrainzngs, mutagen, requests):</p>
 <pre><code>$ python setup.py install
 </code></pre>
 
-<h2>Configuration</h2>
+<h2>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
 
 <p>A configuration file with default values will be created on first run.</p>
 
-<h3>Example configuration file</h3>
+<h3>
+<a name="example-configuration-file" class="anchor" href="#example-configuration-file"><span class="octicon octicon-link"></span></a>Example configuration file</h3>
 
 <pre><code>[wlg]
 sources = whatcd, mbrainz, discogs, echonest, lastfm, idiomag
@@ -137,11 +145,14 @@ artist = 1.33
 splitup = 0.33
 </code></pre>
 
-<h3>Configuration options explained</h3>
+<h3>
+<a name="configuration-options-explained" class="anchor" href="#configuration-options-explained"><span class="octicon octicon-link"></span></a>Configuration options explained</h3>
 
-<h4>whatlastgenre (wlg) section</h4>
+<h4>
+<a name="whatlastgenre-wlg-section" class="anchor" href="#whatlastgenre-wlg-section"><span class="octicon octicon-link"></span></a>whatlastgenre (wlg) section</h4>
 
-<h5>sources option</h5>
+<h5>
+<a name="sources-option" class="anchor" href="#sources-option"><span class="octicon octicon-link"></span></a>sources option</h5>
 
 <p>The music sites/data providers where to get the tags from. Will be called in
 the order you named them, since lastfm supports search by MBIDs make sure to
@@ -156,7 +167,7 @@ Disabling music sites is not recommended, the more sources the better tags.</p>
 well-kept tags from users</li>
 <li>
 <code>lastfm</code> [<a href="http://www.last.fm/">URL</a>]
-mbid search possible, many inaccurate and personal tags from users</li>
+mbid search possible, many personal tags from users</li>
 <li>
 <code>mbrainz</code> [<a href="http://musicbrainz.org/">URL</a>]
 home of mbids</li>
@@ -171,31 +182,37 @@ artist search only </li>
 <code>echonest</code> [<a href="http://echonest.com/">URL</a>]
 artist search only, fixed list of <a href="http://developer.echonest.com/docs/v4/artist.html#list-genres">genres</a>
 </li>
-</ul><h5>tagsfile option</h5>
+</ul><h5>
+<a name="tagsfile-option" class="anchor" href="#tagsfile-option"><span class="octicon octicon-link"></span></a>tagsfile option</h5>
 
 <p>Path to the tags.txt file. Use an absolute path here if you have problems
 accessing the tagsfile by default.</p>
 
-<h5>cache_timout option</h5>
+<h5>
+<a name="cache_timout-option" class="anchor" href="#cache_timout-option"><span class="octicon octicon-link"></span></a>cache_timout option</h5>
 
 <p>Time in days after which cache hits get invalid.
 Default <code>7</code>, Range <code>3 - 90</code></p>
 
-<h5>cache_saveint option</h5>
+<h5>
+<a name="cache_saveint-option" class="anchor" href="#cache_saveint-option"><span class="octicon octicon-link"></span></a>cache_saveint option</h5>
 
 <p>Interval in minutes to save the cache during runtime.
 Default <code>10</code>, Range <code>5 - 60</code></p>
 
-<h4>genres section</h4>
+<h4>
+<a name="genres-section" class="anchor" href="#genres-section"><span class="octicon octicon-link"></span></a>genres section</h4>
 
-<h5>love and hate options</h5>
+<h5>
+<a name="love-and-hate-options" class="anchor" href="#love-and-hate-options"><span class="octicon octicon-link"></span></a>love and hate options</h5>
 
 <p>List of tags that get a multiplier bonus of <code>2.0</code> and <code>0.5</code> respectively.
 Should be considered as "soft" white-/blacklist where you can in-/decrease the
 occurrence of specific tags that you don't like or that are too inaccurate for
 you without fully banning them like with the blacklist option.</p>
 
-<h5>filters option</h5>
+<h5>
+<a name="filters-option" class="anchor" href="#filters-option"><span class="octicon octicon-link"></span></a>filters option</h5>
 
 <p>Use this to activate filters for specific tag groups:</p>
 
@@ -210,9 +227,11 @@ you without fully banning them like with the blacklist option.</p>
 <code>year</code> year tags, like 1980s</li>
 <li>create your own filter lists by adding filter sections to the tags.txt file,
 consider them as large blacklists.</li>
-</ul><h4>scores section</h4>
+</ul><h4>
+<a name="scores-section" class="anchor" href="#scores-section"><span class="octicon octicon-link"></span></a>scores section</h4>
 
-<h5>src_* options</h5>
+<h5>
+<a name="src_-options" class="anchor" href="#src_-options"><span class="octicon octicon-link"></span></a>src_* options</h5>
 
 <p>Every source has its own score multiplier, so music sites that generally
 provide higher quality tags can be given advantage over sources that often
@@ -221,7 +240,8 @@ a source, lower if the source provides many inaccurate or personal tags. If you
 don't want tags from a specific source remove it from the sources list option.
 Default <code>1.0</code>, Range <code>0.5 - 2.0</code>. See sources option above.</p>
 
-<h5>artist option</h5>
+<h5>
+<a name="artist-option" class="anchor" href="#artist-option"><span class="octicon octicon-link"></span></a>artist option</h5>
 
 <p>Score multiplier to give tags found by artist/albumartist searches advantage
 over tags from album searches. The tags get stored separately at first but
@@ -236,7 +256,8 @@ Default <code>1.33</code>, Range <code>0.5 - 2.0</code></p>
 <code>= 1.0</code> handle them equally</li>
 <li>
 <code>&gt; 1.0</code> prefer artist tags</li>
-</ul><h5>splitup option</h5>
+</ul><h5>
+<a name="splitup-option" class="anchor" href="#splitup-option"><span class="octicon octicon-link"></span></a>splitup option</h5>
 
 <p>Score multiplier for modifying the score of the base tag from a tag that got
 split up by space, this enables you to decide whether to keep, prefer or ban
@@ -254,7 +275,8 @@ Default <code>0.33</code>, Range <code>0.0 - 1.0</code></p>
 <code>&lt; 1.0</code> prefer split parts</li>
 <li>
 <code>= 1.0</code> handle them equally</li>
-</ul><h2>Usage</h2>
+</ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <pre><code>usage: whatlastgenre.py [-h] [-v] [-n] [-c] [-i] [-r] [-m] [-l N]
                         [--config CONFIG] [--cache CACHE]
@@ -289,7 +311,8 @@ questions without much waiting time in between.</p>
 <p>Remove the cache file to reset the cache. If you only want to reset the cache
 for specific albums rerun with <code>-c</code> on this albums to ignore cache hits.</p>
 
-<h3>Examples</h3>
+<h3>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
 
 <p>Do a verbose dry-run on your albums in /home/user/music changing nothing:</p>
 
@@ -306,7 +329,8 @@ for specific albums rerun with <code>-c</code> on this albums to ignore cache hi
 <pre><code>$ whatlastgenre.py -irml 5 /home/user/music /media/music
 </code></pre>
 
-<h2>How to help</h2>
+<h2>
+<a name="how-to-help" class="anchor" href="#how-to-help"><span class="octicon octicon-link"></span></a>How to help</h2>
 
 <p>Thanks for being interested in helping to improve it :)
 Things you can tell me about:</p>
@@ -316,7 +340,7 @@ Things you can tell me about:</p>
 <li>Tags that are similar but haven't been merged together</li>
 <li>Tags that doesn't get split but should, or do get split but shouldn't</li>
 <li>Tags that get filtered out but shouldn't (!)</li>
-<li>If your unhappy with the tag results</li>
+<li>If you are unhappy with the tag results</li>
 <li>Did i miss something in tags.txt?</li>
 <li>Any errors of course ;)</li>
 </ul><p>I'm also happy for any other kind of suggestions or just send me your tags
