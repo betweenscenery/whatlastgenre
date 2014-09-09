@@ -2,9 +2,9 @@
 <html>
 
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="whatlastgenre : Improves genre metadata of audio files based on tags from various music sites." />
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="whatlastgenre : Improves genre metadata of audio files based on tags from various music sites.">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -57,17 +57,10 @@ Alternative Rock -&gt; Alternative, Rock</li>
 </ul>
 </li>
 <li>Caches all data received from music sites to make reruns super fast</li>
-<li>Makes use of MusicBrainz IDs when possible and recognizes invalid ones</li>
+<li>Makes use of MusicBrainz IDs when possible</li>
 <li>Optional: gets release type (Album, EP, Anthology, ...) (from What)</li>
 <li>Optional: gets MusicBrainz IDs</li>
-<li>Interactive mode, especially for release types and MBIDs
-(it's not guessing wrong data)
-
-<ul>
-<li>Progressive fuzzy matching to reduce needed user input</li>
-<li>MusicBrainz: Tries to identify artists by looking at its albums </li>
-</ul>
-</li>
+<li>Interactive mode (it's not guessing wrong data)</li>
 <li>Dry-mode for safe testing</li>
 </ul>
 </li>
@@ -81,10 +74,10 @@ separators, too many words or specific parts will get split up. The tags get
 filtered and scored. Artist and album tags get stored separately at first, but
 get merged in the end and the best scored tags will be saved as genre metadata
 in the corresponding album tracks. All data received from music sites will get
-cached after pre-filtering so that rerunning the script will be super fast.
-There are several score multipliers to adjust the scoring to your needs and
-take your personal preferences into account. Please take a look at
-"Configuration options explained" below for more details.</p>
+cached so that rerunning the script will be super fast. There are several
+score multipliers to adjust the scoring to your needs and take your personal
+preferences into account. Please take a look at "Configuration options
+explained" below for more details.</p>
 
 <h3>
 <a name="basic-scoring" class="anchor" href="#basic-scoring"><span class="octicon octicon-link"></span></a>Basic Scoring</h3>
@@ -108,8 +101,8 @@ for each tag will be. So if only one tag is supplied, it will get a score of
 <h2>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>You'll need Python 2.7. Running the following should automatically install all
-needed dependencies (musicbrainzngs, mutagen, requests):</p>
+<p>You'll need Python 2.7. Running the following should also automatically install
+all needed dependencies (mutagen, requests):</p>
 
 <pre><code>$ python setup.py install
 </code></pre>
@@ -123,16 +116,15 @@ needed dependencies (musicbrainzngs, mutagen, requests):</p>
 <a name="example-configuration-file" class="anchor" href="#example-configuration-file"><span class="octicon octicon-link"></span></a>Example configuration file</h3>
 
 <pre><code>[wlg]
-sources = whatcd, mbrainz, discogs, echonest, lastfm, idiomag
+sources = whatcd, mbrainz, lastfm, discogs
 tagsfile = tags.txt
-cache_timeout = 7
-cache_saveint = 10
+cache_timeout = 30
 whatcduser = whatusername
 whatcdpass = whatpassword
 [genres]
 love = soundtrack
 hate = alternative, electronic, indie, pop, rock
-blacklist = charts, male vocalists, other
+blacklist = charts, male vocalist, other
 filters = instrument, label, location, name, year
 [scores]
 src_whatcd = 1.66
@@ -194,12 +186,6 @@ accessing the tagsfile by default.</p>
 <p>Time in days after which cache hits get invalid.
 Default <code>7</code>, Range <code>3 - 90</code></p>
 
-<h5>
-<a name="cache_saveint-option" class="anchor" href="#cache_saveint-option"><span class="octicon octicon-link"></span></a>cache_saveint option</h5>
-
-<p>Interval in minutes to save the cache during runtime.
-Default <code>10</code>, Range <code>5 - 60</code></p>
-
 <h4>
 <a name="genres-section" class="anchor" href="#genres-section"><span class="octicon octicon-link"></span></a>genres section</h4>
 
@@ -207,7 +193,7 @@ Default <code>10</code>, Range <code>5 - 60</code></p>
 <a name="love-and-hate-options" class="anchor" href="#love-and-hate-options"><span class="octicon octicon-link"></span></a>love and hate options</h5>
 
 <p>List of tags that get a multiplier bonus of <code>2.0</code> and <code>0.5</code> respectively.
-Should be considered as "soft" white-/blacklist where you can in-/decrease the
+Should be considered as "soft white-/blacklist" where you can in-/decrease the
 occurrence of specific tags that you don't like or that are too inaccurate for
 you without fully banning them like with the blacklist option.</p>
 
@@ -278,9 +264,11 @@ Default <code>0.33</code>, Range <code>0.0 - 1.0</code></p>
 </ul><h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<pre><code>usage: whatlastgenre.py [-h] [-v] [-n] [-c] [-i] [-r] [-m] [-l N]
-                        [--config CONFIG] [--cache CACHE]
-                        path [path ...]
+<pre><code>usage: whatlastgenre [-h] [-v] [-n] [-c] [-i] [-r] [-m] [-l N]
+                     [--config CONFIG] [--cache CACHE]
+                     path [path ...]
+
+Improves genre metadata of audio files based on tags from various music sites.
 
 positional arguments:
   path                 folder(s) to scan for albums
@@ -316,36 +304,23 @@ for specific albums rerun with <code>-c</code> on this albums to ignore cache hi
 
 <p>Do a verbose dry-run on your albums in /home/user/music changing nothing:</p>
 
-<pre><code>$ whatlastgenre.py -vn /home/user/music
+<pre><code>$ whatlastgenre -vn /home/user/music
 </code></pre>
 
 <p>Tag max. 3 genre tags for all albums in /home/user/music:</p>
 
-<pre><code>$ whatlastgenre.py -l 3 /home/user/music
+<pre><code>$ whatlastgenre -l 3 /home/user/music
 </code></pre>
 
 <p>To get the most of it for all albums in /home/user/music and /media/music:</p>
 
-<pre><code>$ whatlastgenre.py -irml 5 /home/user/music /media/music
+<pre><code>$ whatlastgenre -irml 5 /home/user/music /media/music
 </code></pre>
 
-<h2>
-<a name="how-to-help" class="anchor" href="#how-to-help"><span class="octicon octicon-link"></span></a>How to help</h2>
+<p>whatlastgenre doesn't correct any other tags. If your music files are badly or
+not tagged, whatlastgenre won't work well at all.</p>
 
-<p>Thanks for being interested in helping to improve it :)
-Things you can tell me about:</p>
-
-<ul>
-<li>Tag naming inconsistencies</li>
-<li>Tags that are similar but haven't been merged together</li>
-<li>Tags that doesn't get split but should, or do get split but shouldn't</li>
-<li>Tags that get filtered out but shouldn't (!)</li>
-<li>If you are unhappy with the tag results</li>
-<li>Did i miss something in tags.txt?</li>
-<li>Any errors of course ;)</li>
-</ul><p>I'm also happy for any other kind of suggestions or just send me your tags
-statistics output for a <code>-nl 10</code>-run (please append your config if it differs
-much from the default one), i'll try to improve tags.txt with it. :)</p>
+<p>Please report any bugs and errors you encounter, i would like to fix them :)</p>
       </section>
     </div>
 
