@@ -101,10 +101,28 @@ for each tag will be. So if only one tag is supplied, it will get a score of
 <h2>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>You'll need Python 2.7. Running the following should also automatically install
-all needed dependencies (mutagen, requests):</p>
+<p>You'll need Python 2.7.</p>
 
-<pre><code>$ python setup.py install
+<p>Install dependencies with your distribution specific packages manager</p>
+
+<pre><code># apt get install python-mutagen python-requests
+</code></pre>
+
+<p>OR by using python-pip</p>
+
+<pre><code># pip install mutagen requests
+</code></pre>
+
+<p>then clone the git or download and extract the source package and</p>
+
+<p>run whatlastgenre directly without installation</p>
+
+<pre><code>$ python whatlastgenre --help
+</code></pre>
+
+<p>or install it by running</p>
+
+<pre><code># python setup.py install
 </code></pre>
 
 <h2>
@@ -117,7 +135,6 @@ all needed dependencies (mutagen, requests):</p>
 
 <pre><code>[wlg]
 sources = whatcd, mbrainz, lastfm, discogs
-tagsfile = tags.txt
 cache_timeout = 30
 whatcduser = whatusername
 whatcdpass = whatpassword
@@ -175,16 +192,10 @@ artist search only </li>
 artist search only, fixed list of <a href="http://developer.echonest.com/docs/v4/artist.html#list-genres">genres</a>
 </li>
 </ul><h5>
-<a name="tagsfile-option" class="anchor" href="#tagsfile-option"><span class="octicon octicon-link"></span></a>tagsfile option</h5>
-
-<p>Path to the tags.txt file. Use an absolute path here if you have problems
-accessing the tagsfile by default.</p>
-
-<h5>
 <a name="cache_timout-option" class="anchor" href="#cache_timout-option"><span class="octicon octicon-link"></span></a>cache_timout option</h5>
 
 <p>Time in days after which cache hits get invalid.
-Default <code>7</code>, Range <code>3 - 90</code></p>
+Default <code>30</code>, Range <code>3 - 90</code></p>
 
 <h4>
 <a name="genres-section" class="anchor" href="#genres-section"><span class="octicon octicon-link"></span></a>genres section</h4>
