@@ -100,19 +100,20 @@ for each tag will be. So if only one tag is supplied, it will get a score of
 
 <p>You'll need Python 2.7.</p>
 
-<p>Install dependencies with your distribution specific package manager, on Debian
-based distros this means run the following as root:</p>
+<p>Install dependencies with your package manager, on Debian based distros run this as root:</p>
 
 <pre><code>apt-get install python-mutagen python-requests
 </code></pre>
 
-<p>OR install the dependencies by using python-pip: <code>pip install mutagen requests</code></p>
-
 <ul>
-<li>Clone the git or download and unzip the [<a href="http://github.com/YetAnotherNerd/whatlastgenre/archive/master.zip">source package</a>]].</li>
-<li>Run whatlastgenre without installation by using <code>./whatlastgenre</code> from the
-directory you cloned/extracted to.</li>
-<li>Install it by running <code>python setup.py install</code> as root in that directory.</li>
+<li>Alternatively install the dependencies by using python-pip:
+<code>pip install mutagen requests</code>
+</li>
+<li>Clone the git or download and unzip the <a href="http://github.com/YetAnotherNerd/whatlastgenre/archive/master.zip">source package</a>
+</li>
+<li>Run it without install by using <code>./whatlastgenre</code> from the directory you
+cloned/extracted to</li>
+<li>Install it by running <code>python setup.py install</code> as root in that directory</li>
 </ul><h2>
 <a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
 
@@ -124,7 +125,7 @@ directory you cloned/extracted to.</li>
 <a name="example-configuration-file" class="anchor" href="#example-configuration-file"><span class="octicon octicon-link"></span></a>Example configuration file</h3>
 
 <pre><code>[wlg]
-sources = whatcd, mbrainz, lastfm, discogs
+sources = whatcd, discogs, mbrainz, lastfm
 cache_timeout = 30
 whatcduser = whatusername
 whatcdpass = whatpassword
