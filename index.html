@@ -32,13 +32,13 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a name="whatlastgenre" class="anchor" href="#whatlastgenre"><span class="octicon octicon-link"></span></a>whatlastgenre</h1>
+<a id="whatlastgenre" class="anchor" href="#whatlastgenre" aria-hidden="true"><span class="octicon octicon-link"></span></a>whatlastgenre</h1>
 
 <p>Improves genre metadata of audio files based on tags from various music sites.</p>
 
 <ul>
 <li>Supported audio files: flac, ogg, mp3, m4a</li>
-<li>Supported music sites: What.CD, Last.FM, MusicBrainz, Discogs, EchoNest, Idiomag</li>
+<li>Supported music sites: What.CD, Last.FM, MusicBrainz, Discogs, EchoNest</li>
 <li>Feature Overview
 
 <ul>
@@ -66,7 +66,7 @@ Jazz/Funk&amp;Rock -&gt; Jazz, Funk, Rock; Alternative Rock -&gt; Alternative, R
 </ul>
 
 <h2>
-<a name="how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>How it works</h2>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How it works</h2>
 
 <p>It scans through folders for albums and receives genre tags for them and their
 artists from different music sites. Equal tags in different writings will be
@@ -80,43 +80,42 @@ personal preferences into account. Please take a look at "Configuration options
 explained" below for more details.</p>
 
 <h5>
-<a name="tag-scoring-with-count-whatcd-lastfm-musicbrainz-idiomag" class="anchor" href="#tag-scoring-with-count-whatcd-lastfm-musicbrainz-idiomag"><span class="octicon octicon-link"></span></a>Tag scoring with count (What.CD, Last.FM, MusicBrainz, Idiomag)</h5>
+<a id="tag-scoring-with-count-whatcd-lastfm-musicbrainz" class="anchor" href="#tag-scoring-with-count-whatcd-lastfm-musicbrainz" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring with count (What.CD, Last.FM, MusicBrainz)</h5>
 
 <p>If counts are supplied for the tags they will get scored by <code>count/topcount</code>,
 where <code>topcount</code> is the highest count of all tags from a source. So the top
-tag gets a score of 1.0, a tag having only half of the top tag's count gets
-a score of 0.5 and so on.</p>
+tag gets a score of <code>1.0</code>, a tag having only half of the top tag's count gets
+a score of <code>0.5</code> and so on.</p>
 
 <h5>
-<a name="tag-scoring-without-count-whatcd-discogs-echonest-idiomag" class="anchor" href="#tag-scoring-without-count-whatcd-discogs-echonest-idiomag"><span class="octicon octicon-link"></span></a>Tag scoring without count (What.CD, Discogs, EchoNest, Idiomag)</h5>
+<a id="tag-scoring-without-count-whatcd-discogs-echonest" class="anchor" href="#tag-scoring-without-count-whatcd-discogs-echonest" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring without count (What.CD, Discogs, EchoNest)</h5>
 
-<p>Tags supplied without a count will be scored <code>0.85^(n-1)</code>, where <code>n</code> is the
-total number of tags supplied by this source. The more tags the lower the score
-for each tag will be. So if only one tag is supplied, it will get a score of
-1.0, two tags will get a score of 0.85 each, three get 0.72 each and so on...</p>
+<p>Tags supplied without a count will be scored <code>max(0.1, 0.85^(n-1))</code>, where <code>n</code>
+is the total number of tags supplied by this source. The more tags the lower
+the score for each tag will be. So if only one tag is supplied, it will get a
+score of <code>1.0</code>, two tags will get a score of <code>0.85</code> each and so on. The minimum
+score is <code>0.1</code>, which applies if there are more then 15 tags supplied.</p>
 
 <h5>
-<a name="tag-merging-of-artist-and-album-tags" class="anchor" href="#tag-merging-of-artist-and-album-tags"><span class="octicon octicon-link"></span></a>Tag merging of artist and album tags</h5>
+<a id="tag-merging-of-artist-and-album-tags" class="anchor" href="#tag-merging-of-artist-and-album-tags" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag merging of artist and album tags</h5>
 
 <p>After all tags have been gathered the scores of album and artist tags will be
 scaled and then merged together taking the artist score modifier option into
 account. This enables that multiple albums from one artist get more equal tags
 by giving tags found by artist searches advantage over tags found by album
-searches.</p>
-
-<p>See <code>artist</code> score option below.</p>
+searches.
+See <code>artist</code> score option below.</p>
 
 <h5>
-<a name="tag-scoring-for-various-artist-albums-without-any-specific-album-artist" class="anchor" href="#tag-scoring-for-various-artist-albums-without-any-specific-album-artist"><span class="octicon octicon-link"></span></a>Tag scoring for various artist albums without any specific album artist</h5>
+<a id="tag-scoring-for-various-artist-albums-without-any-specific-album-artist" class="anchor" href="#tag-scoring-for-various-artist-albums-without-any-specific-album-artist" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring for various artist albums without any specific album artist</h5>
 
 <p>If there is no specific album artist for a various artist album every track
 artist gets used for searching. Tags for artists that appear multiple times in
-that album get counted multiple times.</p>
-
-<p>See <code>various</code> score option below.</p>
+that album get counted multiple times.
+See <code>various</code> score option below.</p>
 
 <h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>You'll need Python 2.7.</p>
 
@@ -138,24 +137,23 @@ cloned/extracted to</li>
 </ul>
 
 <h5>
-<a name="optional-dependencies" class="anchor" href="#optional-dependencies"><span class="octicon octicon-link"></span></a>Optional Dependencies</h5>
+<a id="optional-dependencies" class="anchor" href="#optional-dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optional Dependencies</h5>
 
 <ul>
 <li>
-<code>oauth2</code> is required for Discogs (disabled by default). If you want to use
-Discogs, use <code>apt-get install python-oauth2</code> or <code>pip install oauth2</code> to
-install it (like above)</li>
+<code>rauth</code> is required for Discogs (disabled by default). If you want to use
+Discogs, install <code>rauth</code> with pip like above and activate <code>discogs</code> in the
+configuration file (see below).</li>
 </ul>
 
 <h2>
-<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
 
-<p>A configuration file with default values will be created on first run.</p>
-
-<p>The default location for the configuration file is <code>~/.whatlastgenre/config</code>.</p>
+<p>A configuration file with default values will be created at
+<code>~/.whatlastgenre/config</code> on first run.</p>
 
 <h3>
-<a name="example-configuration-file" class="anchor" href="#example-configuration-file"><span class="octicon octicon-link"></span></a>Example configuration file</h3>
+<a id="example-configuration-file" class="anchor" href="#example-configuration-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example configuration file</h3>
 
 <pre><code>[wlg]
 sources = whatcd, discogs, mbrainz, lastfm
@@ -175,18 +173,17 @@ src_whatcd = 1.66
 src_lastfm = 0.66
 src_mbrainz = 1.00
 src_discogs = 1.00
-src_idiomag = 1.00
 src_echonest = 1.00
 </code></pre>
 
 <h3>
-<a name="configuration-options-explained" class="anchor" href="#configuration-options-explained"><span class="octicon octicon-link"></span></a>Configuration options explained</h3>
+<a id="configuration-options-explained" class="anchor" href="#configuration-options-explained" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration options explained</h3>
 
 <h4>
-<a name="whatlastgenre-wlg-section" class="anchor" href="#whatlastgenre-wlg-section"><span class="octicon octicon-link"></span></a>whatlastgenre (wlg) section</h4>
+<a id="whatlastgenre-wlg-section" class="anchor" href="#whatlastgenre-wlg-section" aria-hidden="true"><span class="octicon octicon-link"></span></a>whatlastgenre (wlg) section</h4>
 
 <h5>
-<a name="sources-option" class="anchor" href="#sources-option"><span class="octicon octicon-link"></span></a>sources option</h5>
+<a id="sources-option" class="anchor" href="#sources-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>sources option</h5>
 
 <p>The music sites where to get the genre tags from.</p>
 
@@ -206,9 +203,6 @@ album only, fixed list of <a href="http://discogs.com/help/submission-guidelines
 <a href="http://wiki.discogs.com/index.php/Style_Guide">styles</a>,
 now requires authentication (own account needed)</li>
 <li>
-<code>idiomag</code> [<a href="http://idiomag.com">URL</a>]
-artist only</li>
-<li>
 <code>echonest</code> [<a href="http://echonest.com">URL</a>]
 artist only, fixed list of
 <a href="http://developer.echonest.com/docs/v4/artist.html#list-genres">genres</a>
@@ -216,17 +210,17 @@ artist only, fixed list of
 </ul>
 
 <h5>
-<a name="cache_timout-option" class="anchor" href="#cache_timout-option"><span class="octicon octicon-link"></span></a>cache_timout option</h5>
+<a id="cache_timout-option" class="anchor" href="#cache_timout-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>cache_timout option</h5>
 
 <p>Time in days after which cache hits get invalid.</p>
 
 <p>Default <code>30</code>, Range <code>14 - 180</code></p>
 
 <h4>
-<a name="genres-section" class="anchor" href="#genres-section"><span class="octicon octicon-link"></span></a>genres section</h4>
+<a id="genres-section" class="anchor" href="#genres-section" aria-hidden="true"><span class="octicon octicon-link"></span></a>genres section</h4>
 
 <h5>
-<a name="love-and-hate-options" class="anchor" href="#love-and-hate-options"><span class="octicon octicon-link"></span></a>love and hate options</h5>
+<a id="love-and-hate-options" class="anchor" href="#love-and-hate-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>love and hate options</h5>
 
 <p>List of tags that get a multiplier bonus of <code>2.0</code> and <code>0.5</code> respectively.
 Should be considered as "soft white-/blacklist" where you can in-/decrease the
@@ -234,7 +228,7 @@ occurrence of specific tags that you don't like or that are too inaccurate for
 you without fully banning them like with the blacklist option.</p>
 
 <h5>
-<a name="filters-option" class="anchor" href="#filters-option"><span class="octicon octicon-link"></span></a>filters option</h5>
+<a id="filters-option" class="anchor" href="#filters-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>filters option</h5>
 
 <p>Use this to activate genre tag filters for specific groups of tags. The filter
 names relate to the filter sections in the tags.txt file.</p>
@@ -251,10 +245,10 @@ names relate to the filter sections in the tags.txt file.</p>
 </ul>
 
 <h4>
-<a name="scores-section" class="anchor" href="#scores-section"><span class="octicon octicon-link"></span></a>scores section</h4>
+<a id="scores-section" class="anchor" href="#scores-section" aria-hidden="true"><span class="octicon octicon-link"></span></a>scores section</h4>
 
 <h5>
-<a name="artist-option" class="anchor" href="#artist-option"><span class="octicon octicon-link"></span></a>artist option</h5>
+<a id="artist-option" class="anchor" href="#artist-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>artist option</h5>
 
 <p>Score multiplier to give tags found by albumartist searches advantage over tags
 from album searches. The tags get stored separately at first but then put
@@ -275,7 +269,7 @@ albums from one artist get more equal tags.</p>
 </ul>
 
 <h5>
-<a name="various-option" class="anchor" href="#various-option"><span class="octicon octicon-link"></span></a>various option</h5>
+<a id="various-option" class="anchor" href="#various-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>various option</h5>
 
 <p>Score multiplier similar to artist option, but this one applies to various
 artists releases if there is no albumartist and all the track artists get used
@@ -294,21 +288,20 @@ for searching. For example: a 5 track va-album with 3 tracks from artist A and
 </ul>
 
 <h5>
-<a name="splitup-option" class="anchor" href="#splitup-option"><span class="octicon octicon-link"></span></a>splitup option</h5>
+<a id="splitup-option" class="anchor" href="#splitup-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>splitup option</h5>
 
 <p>Score multiplier for modifying the score of the base tag from a tag that got
-split up by space, this enables you to decide whether to keep, prefer or ban
+split up by space. This enables you to decide whether to keep, prefer or ban
 the base tags. For example, lets say we have 'Alternative Rock' with a score
 of 1: It will end up as Alternative with score 1, Rock with score 1 and
 Alternative Rock with score <code>1 * &lt;splitup-score&gt;</code>. So if you don't want to keep
-Alternative Rock, just set it to 0, but consider using a very small number
-instead to avoid banning them totally.</p>
+Alternative Rock, just set it to 0.</p>
 
 <p>Default <code>0.33</code>, Range <code>0.0 - 1.0</code></p>
 
 <ul>
 <li>
-<code>= 0.0</code> forget about the "base" tags</li>
+<code>= 0.0</code> forget about the base tags</li>
 <li>
 <code>&lt; 1.0</code> prefer split parts</li>
 <li>
@@ -316,7 +309,7 @@ instead to avoid banning them totally.</p>
 </ul>
 
 <h5>
-<a name="src_-options" class="anchor" href="#src_-options"><span class="octicon octicon-link"></span></a>src_* options</h5>
+<a id="src_-options" class="anchor" href="#src_-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>src_* options</h5>
 
 <p>Every source has its own score multiplier, so music sites that generally
 provide higher quality tags can be given advantage over sources that often
@@ -324,10 +317,10 @@ provide bad, inaccurate or personal tags. Increase if you trust the tags from
 a source, lower if the source provides many inaccurate or personal tags. If you
 don't want tags from a specific source remove it from the sources list option.</p>
 
-<p>Default <code>1.0</code>, Range <code>0.5 - 2.0</code>. See sources option above.</p>
+<p>Default <code>1.0</code>, Range <code>0.5 - 2.0</code>. See <code>sources</code> option above.</p>
 
 <h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <pre><code>usage: whatlastgenre [-h] [-v] [-n] [-i] [-c] [-r] [-m] [-l N] path [path ...]
 
@@ -357,21 +350,21 @@ questions without much waiting time in between.</p>
 for specific albums rerun with <code>-c</code> on this albums to ignore cache hits.</p>
 
 <h3>
-<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h3>
 
 <p>Do a verbose dry-run on your albums in /home/user/music changing nothing:</p>
 
-<pre><code>$ whatlastgenre -vn /home/user/music
+<pre><code>whatlastgenre -vn /home/user/music
 </code></pre>
 
 <p>Tag max. 3 genre tags for all albums in /home/user/music:</p>
 
-<pre><code>$ whatlastgenre -l 3 /home/user/music
+<pre><code>whatlastgenre -l 3 /home/user/music
 </code></pre>
 
 <p>To get the most of it for all albums in /home/user/music and /media/music:</p>
 
-<pre><code>$ whatlastgenre -irml 5 /home/user/music /media/music
+<pre><code>whatlastgenre -irml 5 /home/user/music /media/music
 </code></pre>
 
 <p>whatlastgenre doesn't correct any other tags. If your music files are badly or
@@ -385,7 +378,7 @@ not tagged it won't work well at all.</p>
     <div id="footer_wrap" class="outer">
       <footer class="inner">
         <p class="copyright">whatlastgenre maintained by <a href="https://github.com/YetAnotherNerd">YetAnotherNerd</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
 
