@@ -43,23 +43,25 @@
 
 <ul>
 <li>Gets genre tags for artists and albums from music sites and finds the most
-eligible ones by merging, splitting, filtering and scoring them.
+eligible ones.
 
 <ul>
-<li>Merges similar tags in different writings to ensure consistent names, eg.
-DnB, D&amp;B, Drum and Bass -&gt; Drum &amp; Bass;
+<li>Merges similar tags in different writings with aliases and regex
+replacements to ensure consistent naming,
+eg. DnB, D&amp;B, Drum and Bass -&gt; Drum &amp; Bass;
 Alt., Altern, Alterneitif -&gt; Alternative</li>
 <li>Splits tags in various applicable ways, eg.
-Jazz/Funk&amp;Rock -&gt; Jazz, Funk, Rock; Alternative Rock -&gt; Alternative, Rock</li>
-<li>Filters crappy tags without using a whitelist</li>
+Jazz/Funk&amp;Rock -&gt; Jazz, Funk, Rock;
+Alternative Rock -&gt; Alternative, Rock</li>
+<li>Uses a whitelist to avoid crappy tags (see genres.txt)</li>
 <li>Scores tags while taking personal preferences into account</li>
 </ul>
 </li>
 <li>Caches all data received from music sites to make reruns super fast</li>
-<li>Makes use of MusicBrainz IDs when possible</li>
-<li>Optional: gets release type (Album, EP, Anthology, ...) from What.CD</li>
-<li>Optional: gets MusicBrainz IDs</li>
-<li>Interactive mode to select right MBID and releasetype for ambiguous results</li>
+<li>Uses MusicBrainz IDs for searching when available</li>
+<li>Optional: gets release type (Album, EP, Anthology, ...) from What.CD
+(with interactivity mode for ambiguous results)</li>
+<li>Can be used as plugin in 3rd party software, currently: beets</li>
 <li>Dry-mode for safe testing</li>
 </ul>
 </li>
@@ -69,14 +71,14 @@ Jazz/Funk&amp;Rock -&gt; Jazz, Funk, Rock; Alternative Rock -&gt; Alternative, R
 <a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How it works</h2>
 
 <p>It scans through folders for albums and receives genre tags for them and their
-artists from different music sites. Equal tags in different writings will be
-split and/or merged to ensure consistent names and proper scoring. The tags
-get filtered and scored. Artist and album tags get handled separately and then
-merged using configurable score modifiers. The best scored tags will be saved
-as genre metadata in the corresponding album tracks. All data received from
-music sites gets cached so that rerunning the script will be super fast. There
-are several score multipliers to adjust the scoring to your needs and take your
-personal preferences into account. Please take a look at "Configuration options
+artists from selected music sites. Equal tags in different writings will be
+split and/or merged to ensure consistent names and proper scoring. Artist and
+album tags get handled separately and then merged using configurable score
+modifiers. The best scored tags will be saved as genre metadata in the
+corresponding album tracks. All data received from music sites gets cached so
+that rerunning the script will be super fast. There are several score
+multipliers to adjust the scoring to your needs and take your personal
+preferences into account. Please take a look at "Configuration options
 explained" below for more details.</p>
 
 <h5>
@@ -94,7 +96,7 @@ a score of <code>0.5</code> and so on.</p>
 is the total number of tags supplied by this source. The more tags the lower
 the score for each tag will be. So if only one tag is supplied, it will get a
 score of <code>1.0</code>, two tags will get a score of <code>0.85</code> each and so on. The minimum
-score is <code>0.1</code>, which applies if there are more then 15 tags supplied.</p>
+score is <code>0.1</code>, which applies if there are more than 15 tags supplied.</p>
 
 <h5>
 <a id="tag-merging-of-artist-and-album-tags" class="anchor" href="#tag-merging-of-artist-and-album-tags" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag merging of artist and album tags</h5>
@@ -110,26 +112,36 @@ See <code>artist</code> score option below.</p>
 <a id="tag-scoring-for-various-artist-albums-without-any-specific-album-artist" class="anchor" href="#tag-scoring-for-various-artist-albums-without-any-specific-album-artist" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring for various artist albums without any specific album artist</h5>
 
 <p>If there is no specific album artist for a various artist album every track
-artist gets used for searching. Tags for artists that appear multiple times in
-that album get counted multiple times.
-See <code>various</code> score option below.</p>
+artist can get used for searching. Tags for artists that appear multiple times
+in that album get counted multiple times.
+See <code>vaqueries</code> and <code>various</code> options below.</p>
+
+<h5>
+<a id="multiple-value-metadata-and-old-id3-versions" class="anchor" href="#multiple-value-metadata-and-old-id3-versions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Multiple value metadata and old ID3 versions</h5>
+
+<p>Mutagen's ID3 API is primary targeted at id3v2.4, so by default any id3 tags
+will be upgraded to 2.4 and saving a file will make it 2.4 as well.
+See <a href="https://mutagen.readthedocs.org/en/latest/tutorial.html#id3-versions">mutagen doc here</a>
+for details.
+However, if you don't want to use v2.4 tags you can use the <code>id3v23sep</code> config
+option explained below.</p>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>You'll need Python 2.7.</p>
 
-<p>Install dependencies with your package manager, on Debian based distros run
+<p>Install the dependencies with your package manager, on Debian based distros run
 this as root:</p>
 
 <pre><code>apt-get install python-mutagen python-requests
 </code></pre>
 
 <ul>
-<li>Alternatively, install dependencies by using python-pip:
+<li>Alternatively, install the dependencies using python-pip:
 <code>pip install mutagen requests</code>
 </li>
-<li>Clone the git or download and unzip the <a href="http://github.com/YetAnotherNerd/whatlastgenre/archive/master.zip">source package</a>
+<li>Clone the repository or download and unzip the <a href="http://github.com/YetAnotherNerd/whatlastgenre/archive/master.zip">source package</a>
 </li>
 <li>Run it without install by using <code>./whatlastgenre</code> from the directory you
 cloned/extracted to</li>
@@ -141,9 +153,12 @@ cloned/extracted to</li>
 
 <ul>
 <li>
-<code>rauth</code> is required for Discogs (disabled by default). If you want to use
+<code>rauth</code> is required for Discogs support. If you want to use
 Discogs, install <code>rauth</code> with pip like above and activate <code>discogs</code> in the
 configuration file (see below).</li>
+<li>
+<code>requests-cache</code> can additionally cache the raw queries from requests if
+installed. This is mainly a developers feature.</li>
 </ul>
 
 <h2>
@@ -156,22 +171,22 @@ configuration file (see below).</li>
 <a id="example-configuration-file" class="anchor" href="#example-configuration-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example configuration file</h3>
 
 <pre><code>[wlg]
-sources = whatcd, discogs, mbrainz, lastfm
-cache_timeout = 60
+sources = whatcd, lastfm, discogs, mbrainz
 whatcduser = whatusername
 whatcdpass = whatpassword
+whitelist =
+vaqueries = True
+id3v23_sep =
 [genres]
-love = soundtrack
+love = trip-rock
 hate = alternative, electronic, indie, pop, rock
-blacklist = charts, male vocalist, other
-filters = instrument, label, location, year
 [scores]
 artist = 1.33
 various = 0.66
 splitup = 0.33
-src_whatcd = 1.66
+src_whatcd = 1.50
 src_lastfm = 0.66
-src_mbrainz = 1.00
+src_mbrainz = 0.66
 src_discogs = 1.00
 src_echonest = 1.00
 </code></pre>
@@ -193,28 +208,50 @@ src_echonest = 1.00
 well-kept tags from community</li>
 <li>
 <code>lastfm</code> [<a href="http://last.fm">URL</a>]
-mbid search possible, many personal tags from users</li>
+many personal tags from users</li>
 <li>
 <code>mbrainz</code> [<a href="http://musicbrainz.org">URL</a>]
 home of mbids</li>
 <li>
 <code>discogs</code> [<a href="http://discogs.com">URL</a>]
-album only, fixed list of <a href="http://discogs.com/help/submission-guidelines-release-genres-styles.html">genres</a> and
-<a href="http://wiki.discogs.com/index.php/Style_Guide">styles</a>,
-now requires authentication (own account needed)</li>
+album only, fixed list of <a href="http://www.discogs.com/help/doc/submission-guidelines-release-genres-styles">genres and styles</a>,
+requires authentication (own account needed)</li>
 <li>
 <code>echonest</code> [<a href="http://echonest.com">URL</a>]
 artist only, fixed list of
-<a href="http://developer.echonest.com/docs/v4/artist.html#list-genres">genres</a>
+<a href="http://developer.echonest.com/docs/v4/genre.html#list">genres</a>
 </li>
 </ul>
 
 <h5>
-<a id="cache_timout-option" class="anchor" href="#cache_timout-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>cache_timout option</h5>
+<a id="whitelist-option" class="anchor" href="#whitelist-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>whitelist option</h5>
 
-<p>Time in days after which cache hits get invalid.</p>
+<p>Path to your custom whitelist. Defaults to shipped whitelist if empty.</p>
 
-<p>Default <code>30</code>, Range <code>14 - 180</code></p>
+<p>Default <code></code></p>
+
+<h5>
+<a id="vaqueries-option" class="anchor" href="#vaqueries-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>vaqueries option</h5>
+
+<p>Search for all artists if there is no albumartist on albums with various
+artists. This will make queries for va-albums without albumartist take
+significantly longer, but yields more results.
+See <code>various</code> score option below.</p>
+
+<p>Default <code>True</code></p>
+
+<h5>
+<a id="id3v23sep-option" class="anchor" href="#id3v23sep-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>id3v23sep option</h5>
+
+<p>By (mutagen) default all id3 v2.3 tags will be upgraded to v2.4. Since v2.3
+can't store multiple value metadata you need to set a seperator if you intend
+to use old v2.3 tags (not recommended).
+Setting this to a non-empty value (for example <code>,</code>) will downgrade all id3 tags
+to v2.3 and store all genres in one tag seperated by <code>id3v23sep</code> instead of
+using v2.4 tags that can have multiple values.
+You should upgrade your other software to support id3v24 instead of using this.</p>
+
+<p>Default <code></code> (recommended)</p>
 
 <h4>
 <a id="genres-section" class="anchor" href="#genres-section" aria-hidden="true"><span class="octicon octicon-link"></span></a>genres section</h4>
@@ -225,24 +262,7 @@ artist only, fixed list of
 <p>List of tags that get a multiplier bonus of <code>2.0</code> and <code>0.5</code> respectively.
 Should be considered as "soft white-/blacklist" where you can in-/decrease the
 occurrence of specific tags that you don't like or that are too inaccurate for
-you without fully banning them like with the blacklist option.</p>
-
-<h5>
-<a id="filters-option" class="anchor" href="#filters-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>filters option</h5>
-
-<p>Use this to activate genre tag filters for specific groups of tags. The filter
-names relate to the filter sections in the tags.txt file.</p>
-
-<ul>
-<li>
-<code>instrument</code> instrument related names, like piano or guitarist</li>
-<li>
-<code>label</code> label names</li>
-<li>
-<code>location</code> country, city and nationality names</li>
-<li>
-<code>year</code> year tags, like 2010, 80s</li>
-</ul>
+you without fully banning them.</p>
 
 <h4>
 <a id="scores-section" class="anchor" href="#scores-section" aria-hidden="true"><span class="octicon octicon-link"></span></a>scores section</h4>
@@ -273,8 +293,9 @@ albums from one artist get more equal tags.</p>
 
 <p>Score multiplier similar to artist option, but this one applies to various
 artists releases if there is no albumartist and all the track artists get used
-for searching. For example: a 5 track va-album with 3 tracks from artist A and
-2 tracks from artist B will get tags like this:</p>
+for searching, which can be en/disabled with the <code>vaqueries</code> option (see above).
+For example: a 5 track va-album with 3 tracks from artist A and 2 tracks from
+artist B will get tags like this:</p>
 
 <p><code>(3 * &lt;artist A tags&gt; + 2 * &lt;artist B tags&gt;) * &lt;various score&gt; + &lt;album tags&gt;</code></p>
 
@@ -322,7 +343,7 @@ don't want tags from a specific source remove it from the sources list option.</
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<pre><code>usage: whatlastgenre [-h] [-v] [-n] [-i] [-c] [-r] [-m] [-l N] path [path ...]
+<pre><code>usage: whatlastgenre [-h] [-v] [-n] [-u] [-i] [-r] [-l N] [-d] path [path ...]
 
 positional arguments:
   path                 folder(s) to scan for albums
@@ -331,44 +352,68 @@ optional arguments:
   -h, --help           show this help message and exit
   -v, --verbose        verbose output (-vv for debug) (default: 0)
   -n, --dry            don't save metadata (default: False)
+  -u, --update-cache   force cache update (default: False)
   -i, --interactive    interactive mode (default: False)
-  -c, --no-cache       bypass cache hits (default: False)
   -r, --tag-release    tag release type (from What.CD) (default: False)
-  -m, --tag-mbids      tag musicbrainz ids (default: False)
   -l N, --tag-limit N  max. number of genre tags (default: 4)
+  -d, --difflib        enable difflib matching (slow) (default: False)
 </code></pre>
 
-<p>If you seriously want to tag release-types <code>-r</code> or musicbrainz-ids <code>-m</code> you
-should also enable interactive mode <code>-i</code>. Consider to save the MBIDs <code>-m</code> when
-using mbrainz, you searched for them, why not save them? ;)</p>
+<p>If you seriously want to tag release-types <code>-r</code> you should also enable
+interactive mode <code>-i</code>. I recommend first doing a dry-run to fill the cache and
+then doing a normal run with <code>-ir</code> enabled. This way you can choose the right
+results without much waiting time in between.</p>
 
-<p>I recommend first doing a dry-run to fill the cache and then doing a normal
-run with interactivity enabled. This way you can answer all interactivity
-questions without much waiting time in between.</p>
+<p>Remove the cache file to reset the cache or use <code>-u</code> to force cache updates.</p>
 
-<p>Remove the cache file to reset the cache. If you only want to reset the cache
-for specific albums rerun with <code>-c</code> on this albums to ignore cache hits.</p>
+<p>Don't waste your time running -n and -i together.</p>
+
+<p>whatlastgenre doesn't correct any other tags. If your music files are badly or
+not tagged it won't work well at all.</p>
 
 <h3>
 <a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h3>
 
-<p>Do a verbose dry-run on your albums in /home/user/music changing nothing:</p>
+<p>Do a verbose dry-run on your albums in /media/music changing nothing:</p>
 
-<pre><code>whatlastgenre -vn /home/user/music
+<pre><code>whatlastgenre -vn /media/music
 </code></pre>
 
-<p>Tag max. 3 genre tags for all albums in /home/user/music:</p>
+<p>Tag up to 3 genre tags for all albums in /media/music and /home/user/music:</p>
 
-<pre><code>whatlastgenre -l 3 /home/user/music
+<pre><code>whatlastgenre -l 3 /media/music /home/user/music
 </code></pre>
 
-<p>To get the most of it for all albums in /home/user/music and /media/music:</p>
+<p>Tag releasetypes and up to 4 genre tags for all albums in /media/music:</p>
 
-<pre><code>whatlastgenre -irml 5 /home/user/music /media/music
+<pre><code>whatlastgenre -ir /media/music
 </code></pre>
 
-<p>whatlastgenre doesn't correct any other tags. If your music files are badly or
-not tagged it won't work well at all.</p>
+<h2>
+<a id="plugins" class="anchor" href="#plugins" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plugins</h2>
+
+<p>whatlastgenre can be used in other software via plugins.</p>
+
+<p>At the moment there is only a plugin for beets.</p>
+
+<p>See README files in plugin folder for details.</p>
+
+<h2>
+<a id="help--improving-tagsfile-and-whitelist" class="anchor" href="#help--improving-tagsfile-and-whitelist" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help / Improving tagsfile and whitelist</h2>
+
+<p>How to debug tag handling:</p>
+
+<p>Do a debug dry run and save output to log:</p>
+
+<pre><code>whatlastgenre -nvv /media/music &gt; /tmp/wlg.log 2&gt;&amp;1
+</code></pre>
+
+<p>Search the log for specific lines and see if they are valid:</p>
+
+<pre><code>grep -E "^(tag |Error)" /tmp/wlg.log | sort -u | less
+</code></pre>
+
+<p>Feel free to send me your log file so i can use it for debugging myself.</p>
 
 <p>Please report any bugs and errors you encounter, i would like to fix them :)</p>
       </section>
