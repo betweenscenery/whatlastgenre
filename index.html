@@ -4,7 +4,7 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="whatlastgenre : Improves genre metadata of audio files based on tags from various music sites.">
+    <meta name="description" content="whatlastgenre : Improve genre metadata of audio files based on tags from various music sites.">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -19,7 +19,7 @@
           <a id="forkme_banner" href="https://github.com/YetAnotherNerd/whatlastgenre">View on GitHub</a>
 
           <h1 id="project_title">whatlastgenre</h1>
-          <h2 id="project_tagline">Improves genre metadata of audio files based on tags from various music sites.</h2>
+          <h2 id="project_tagline">Improve genre metadata of audio files based on tags from various music sites.</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/YetAnotherNerd/whatlastgenre/zipball/master">Download this project as a .zip file</a>
@@ -126,6 +126,34 @@ for details.
 However, if you don't want to use v2.4 tags you can use the <code>id3v23sep</code> config
 option explained below.</p>
 
+<h5>
+<a id="interactivity" class="anchor" href="#interactivity" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interactivity</h5>
+
+<p>Sometimes a dataprovider returns more then one result of tags. To know the
+right set user input might be required, but several steps are taken to
+reduce needed interactivity:</p>
+
+<ul>
+<li>Prefilter album results by year (if given)</li>
+<li>Prefilter whatcd album results by releasetype (if given)</li>
+<li>Automatically merges the tags from few results
+
+<ul>
+<li>only merge if all have the same releasetype if --tag-release is enabled</li>
+</ul>
+</li>
+<li>If there are still too many results, there are two options
+
+<ul>
+<li>--tag-release and src is whatcd: ask user if -i enabled</li>
+<li>don't take results into account</li>
+</ul>
+</li>
+</ul>
+
+<p>So, interactivity is only needed for setting proper releasetypes
+in some ambiguous cases.</p>
+
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
@@ -226,19 +254,15 @@ artist only, fixed list of
 <h5>
 <a id="whitelist-option" class="anchor" href="#whitelist-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>whitelist option</h5>
 
-<p>Path to your custom whitelist. Defaults to shipped whitelist if empty.</p>
-
-<p>Default <code></code></p>
+<p>Path to your custom whitelist. Use shipped whitelist if empty (default).</p>
 
 <h5>
 <a id="vaqueries-option" class="anchor" href="#vaqueries-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>vaqueries option</h5>
 
 <p>Search for all artists if there is no albumartist on albums with various
 artists. This will make queries for va-albums without albumartist take
-significantly longer, but yields more results.
+significantly longer, but yields more results. (Default: <code>True</code>)
 See <code>various</code> score option below.</p>
-
-<p>Default <code>True</code></p>
 
 <h5>
 <a id="id3v23sep-option" class="anchor" href="#id3v23sep-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>id3v23sep option</h5>
@@ -248,10 +272,8 @@ can't store multiple value metadata you need to set a seperator if you intend
 to use old v2.3 tags (not recommended).
 Setting this to a non-empty value (for example <code>,</code>) will downgrade all id3 tags
 to v2.3 and store all genres in one tag seperated by <code>id3v23sep</code> instead of
-using v2.4 tags that can have multiple values.
+using v2.4 tags that can have multiple values. Empty by defaut.
 You should upgrade your other software to support id3v24 instead of using this.</p>
-
-<p>Default <code></code> (recommended)</p>
 
 <h4>
 <a id="genres-section" class="anchor" href="#genres-section" aria-hidden="true"><span class="octicon octicon-link"></span></a>genres section</h4>
@@ -343,7 +365,7 @@ don't want tags from a specific source remove it from the sources list option.</
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<pre><code>usage: whatlastgenre [-h] [-v] [-n] [-u] [-i] [-r] [-l N] [-d] path [path ...]
+<pre><code>usage: whatlastgenre [-h] [-v] [-n] [-u] [-l N] [-r] [-i] [-d] path [path ...]
 
 positional arguments:
   path                 folder(s) to scan for albums
@@ -353,16 +375,17 @@ optional arguments:
   -v, --verbose        verbose output (-vv for debug) (default: 0)
   -n, --dry            don't save metadata (default: False)
   -u, --update-cache   force cache update (default: False)
-  -i, --interactive    interactive mode (default: False)
-  -r, --tag-release    tag release type (from What.CD) (default: False)
   -l N, --tag-limit N  max. number of genre tags (default: 4)
+  -r, --tag-release    tag release type (from What.CD) (default: False)
+  -i, --interactive    interactive mode (default: False)
   -d, --difflib        enable difflib matching (slow) (default: False)
 </code></pre>
 
-<p>If you seriously want to tag release-types <code>-r</code> you should also enable
+<p>If you seriously want to tag releasetypes <code>-r</code> you should also enable
 interactive mode <code>-i</code>. I recommend first doing a dry-run to fill the cache and
-then doing a normal run with <code>-ir</code> enabled. This way you can choose the right
-results without much waiting time in between.</p>
+then doing a normal run with <code>-ri</code> enabled. This way you can choose the right
+results without much waiting time in between. You can use <code>-r</code> without <code>-i</code> but
+might get less releasetypes.</p>
 
 <p>Remove the cache file to reset the cache or use <code>-u</code> to force cache updates.</p>
 
@@ -386,7 +409,7 @@ not tagged it won't work well at all.</p>
 
 <p>Tag releasetypes and up to 4 genre tags for all albums in /media/music:</p>
 
-<pre><code>whatlastgenre -ir /media/music
+<pre><code>whatlastgenre -ri /media/music
 </code></pre>
 
 <h2>
@@ -394,24 +417,29 @@ not tagged it won't work well at all.</p>
 
 <p>whatlastgenre can be used in other software via plugins.</p>
 
-<p>At the moment there is only a plugin for beets.</p>
+<p>At the moment there is a plugin for beets.</p>
 
 <p>See README files in plugin folder for details.</p>
 
 <h2>
-<a id="help--improving-tagsfile-and-whitelist" class="anchor" href="#help--improving-tagsfile-and-whitelist" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help / Improving tagsfile and whitelist</h2>
+<a id="help--debug" class="anchor" href="#help--debug" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help / Debug</h2>
 
-<p>How to debug tag handling:</p>
+<p>In order to debug tag handling to improve the whitelist, aliases and replaces,
+you can do the following:</p>
 
 <p>Do a debug dry run and save output to log:</p>
 
 <pre><code>whatlastgenre -nvv /media/music &gt; /tmp/wlg.log 2&gt;&amp;1
 </code></pre>
 
-<p>Search the log for specific lines and see if they are valid:</p>
+<p>Search the log for specific lines:</p>
 
-<pre><code>grep -E "^(tag |Error)" /tmp/wlg.log | sort -u | less
+<pre><code>grep ^Error /tmp/wlg.log | sort -u | less
+grep ^tag /tmp/wlg.log | sort | uniq -c | sort -r | less
 </code></pre>
+
+<p>Use the results to add missing whitelist entries, aliases or replaces.
+Share your improvements to the data/*.txt files if you like.</p>
 
 <p>Feel free to send me your log file so i can use it for debugging myself.</p>
 
