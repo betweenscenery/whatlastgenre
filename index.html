@@ -34,11 +34,11 @@
         <h1>
 <a id="whatlastgenre" class="anchor" href="#whatlastgenre" aria-hidden="true"><span class="octicon octicon-link"></span></a>whatlastgenre</h1>
 
-<p>Improves genre metadata of audio files based on tags from various music sites.</p>
+<p>Improve genre metadata of audio files based on tags from various music sites.</p>
 
 <ul>
 <li>Supported audio files: flac, ogg, mp3, m4a</li>
-<li>Supported music sites: What.CD, Last.FM, MusicBrainz, Discogs, EchoNest</li>
+<li>Supported music sites: What.CD, Last.FM, Discogs, MusicBrainz, EchoNest</li>
 <li>Feature Overview
 
 <ul>
@@ -53,7 +53,8 @@ Alt., Altern, Alterneitif -&gt; Alternative</li>
 <li>Splits tags in various applicable ways, eg.
 Jazz/Funk&amp;Rock -&gt; Jazz, Funk, Rock;
 Alternative Rock -&gt; Alternative, Rock</li>
-<li>Uses a whitelist to avoid crappy tags (see genres.txt)</li>
+<li>Uses a whitelist to avoid crappy tags (see
+<a href="wlg/data/genres.txt">genres.txt</a>)</li>
 <li>Scores tags while taking personal preferences into account</li>
 </ul>
 </li>
@@ -61,7 +62,9 @@ Alternative Rock -&gt; Alternative, Rock</li>
 <li>Uses MusicBrainz IDs for searching when available</li>
 <li>Optional: gets release type (Album, EP, Anthology, ...) from What.CD
 (with interactivity mode for ambiguous results)</li>
-<li>Can be used as plugin in 3rd party software, currently: beets</li>
+<li>Can be used as plugin in other software, currently:
+<a href="https://github.com/sampsyo/beets">beets</a>
+</li>
 <li>Dry-mode for safe testing</li>
 </ul>
 </li>
@@ -70,10 +73,10 @@ Alternative Rock -&gt; Alternative, Rock</li>
 <h2>
 <a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How it works</h2>
 
-<p>It scans through folders for albums and receives genre tags for them and their
-artists from selected music sites. Equal tags in different writings will be
-split and/or merged to ensure consistent names and proper scoring. Artist and
-album tags get handled separately and then merged using configurable score
+<p>It scans through directories for albums and receives genre tags for them and
+their artists from selected music sites. Equal tags in different writings will
+be split and/or merged to ensure consistent names and proper scoring. Artist
+and album tags get handled separately and then merged using configurable score
 modifiers. The best scored tags will be saved as genre metadata in the
 corresponding album tracks. All data received from music sites gets cached so
 that rerunning the script will be super fast. There are several score
@@ -82,7 +85,7 @@ preferences into account. Please take a look at "Configuration options
 explained" below for more details.</p>
 
 <h5>
-<a id="tag-scoring-with-count-whatcd-lastfm-musicbrainz" class="anchor" href="#tag-scoring-with-count-whatcd-lastfm-musicbrainz" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring with count (What.CD, Last.FM, MusicBrainz)</h5>
+<a id="tag-scoring-with-count-whatcd-artist-lastfm-musicbrainz-echonest-terms" class="anchor" href="#tag-scoring-with-count-whatcd-artist-lastfm-musicbrainz-echonest-terms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring with count (What.CD artist, Last.FM, MusicBrainz, EchoNest terms)</h5>
 
 <p>If counts are supplied for the tags they will get scored by <code>count/topcount</code>,
 where <code>topcount</code> is the highest count of all tags from a source. So the top
@@ -90,13 +93,13 @@ tag gets a score of <code>1.0</code>, a tag having only half of the top tag's co
 a score of <code>0.5</code> and so on.</p>
 
 <h5>
-<a id="tag-scoring-without-count-whatcd-discogs-echonest" class="anchor" href="#tag-scoring-without-count-whatcd-discogs-echonest" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring without count (What.CD, Discogs, EchoNest)</h5>
+<a id="tag-scoring-without-count-whatcd-album-discogs-echonest-genres" class="anchor" href="#tag-scoring-without-count-whatcd-album-discogs-echonest-genres" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring without count (What.CD album, Discogs, EchoNest genres)</h5>
 
-<p>Tags supplied without a count will be scored <code>max(0.1, 0.85^(n-1))</code>, where <code>n</code>
+<p>Tags supplied without a count will be scored <code>max(1/3, 0.85^(n-1))</code>, where <code>n</code>
 is the total number of tags supplied by this source. The more tags the lower
 the score for each tag will be. So if only one tag is supplied, it will get a
 score of <code>1.0</code>, two tags will get a score of <code>0.85</code> each and so on. The minimum
-score is <code>0.1</code>, which applies if there are more than 15 tags supplied.</p>
+score is <code>1/3</code>, which applies if there are more than 7 tags supplied.</p>
 
 <h5>
 <a id="tag-merging-of-artist-and-album-tags" class="anchor" href="#tag-merging-of-artist-and-album-tags" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag merging of artist and album tags</h5>
@@ -127,31 +130,16 @@ However, if you don't want to use v2.4 tags you can use the <code>id3v23sep</cod
 option explained below.</p>
 
 <h5>
-<a id="interactivity" class="anchor" href="#interactivity" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interactivity</h5>
+<a id="interactivity-while-tagging-releasetypes" class="anchor" href="#interactivity-while-tagging-releasetypes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interactivity (while tagging releasetypes)</h5>
 
-<p>Sometimes a dataprovider returns more then one result of tags. To know the
-right set user input might be required, but several steps are taken to
-reduce needed interactivity:</p>
-
-<ul>
-<li>Prefilter album results by year (if given)</li>
-<li>Prefilter whatcd album results by releasetype (if given)</li>
-<li>Prefilter whatcd album results by snatched flag</li>
-<li>Automatically merges the tags from few results
-
-<ul>
-<li>only merge if all have the same releasetype if --tag-release is enabled</li>
-</ul>
-</li>
-<li>If there are still too many results, there are two options
-
-<ul>
-<li>--tag-release, src is whatcd, no reltype, not snatched:
-ask user if -i enabled</li>
-<li>don't take results into account</li>
-</ul>
-</li>
-</ul>
+<p>Sometimes a dataprovider returns more than one result of tags (eg. different
+editions of the same album or album and single with the same name). This is not
+a problem since these results often contain very similar tags that can simply
+be merged together. However, to tag releasetypes it is necessary to know the
+right result, so some user input might be required when the results have
+different releasetypes, but several steps are taken to reduce needed
+interactivity, like filtering by snatched flag (make sure to enable 'Snatched
+torrents indicator' in your whatcd profile settings) or by year (if given).</p>
 
 <p>So, interactivity is only needed for setting proper releasetypes
 in some ambiguous cases.</p>
@@ -179,13 +167,12 @@ cloned/extracted to</li>
 </ul>
 
 <h5>
-<a id="optional-dependencies" class="anchor" href="#optional-dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optional Dependencies</h5>
+<a id="optional-dependencies" class="anchor" href="#optional-dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optional dependencies</h5>
 
 <ul>
 <li>
-<code>rauth</code> is required for Discogs support. If you want to use
-Discogs, install <code>rauth</code> with pip like above and activate <code>discogs</code> in the
-configuration file (see below).</li>
+<code>rauth</code> is required for Discogs. If you want to use Discogs, install <code>rauth</code>
+with pip like above and activate <code>discogs</code> in the config file (see below).</li>
 <li>
 <code>requests-cache</code> can additionally cache the raw queries from requests if
 installed. This is mainly a developers feature.</li>
@@ -201,7 +188,7 @@ installed. This is mainly a developers feature.</li>
 <a id="example-configuration-file" class="anchor" href="#example-configuration-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example configuration file</h3>
 
 <pre><code>[wlg]
-sources = whatcd, lastfm, discogs, mbrainz
+sources = whatcd, lastfm, discogs, mbrainz, echonest
 whatcduser = whatusername
 whatcdpass = whatpassword
 whitelist =
@@ -216,8 +203,8 @@ various = 0.66
 splitup = 0.33
 src_whatcd = 1.50
 src_lastfm = 0.66
-src_mbrainz = 0.66
 src_discogs = 1.00
+src_mbrainz = 0.66
 src_echonest = 1.00
 </code></pre>
 
@@ -240,23 +227,24 @@ well-kept tags from community</li>
 <code>lastfm</code> [<a href="http://last.fm">URL</a>]
 many personal tags from users</li>
 <li>
-<code>mbrainz</code> [<a href="http://musicbrainz.org">URL</a>]
-home of mbids</li>
-<li>
 <code>discogs</code> [<a href="http://discogs.com">URL</a>]
 album only, fixed list of <a href="http://www.discogs.com/help/doc/submission-guidelines-release-genres-styles">genres and styles</a>,
 requires authentication (own account needed)</li>
 <li>
+<code>mbrainz</code> [<a href="http://musicbrainz.org">URL</a>]
+home of mbids</li>
+<li>
 <code>echonest</code> [<a href="http://echonest.com">URL</a>]
-artist only, fixed list of
-<a href="http://developer.echonest.com/docs/v4/genre.html#list">genres</a>
-</li>
+artist only, genres without counts and terms with counts (see
+<a href="http://developer.echonest.com/docs/v4/">doc</a>)</li>
 </ul>
 
 <h5>
 <a id="whitelist-option" class="anchor" href="#whitelist-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>whitelist option</h5>
 
-<p>Path to your custom whitelist. Use shipped whitelist if empty (default).</p>
+<p>Path to your custom whitelist. Use <a href="wlg/data/genres.txt">shipped whitelist</a>
+if empty (default). Make sure the aliases and replacements from
+<a href="wlg/data/tags.txt">tags.txt</a> fit the used whitelist.</p>
 
 <h5>
 <a id="vaqueries-option" class="anchor" href="#vaqueries-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>vaqueries option</h5>
@@ -315,9 +303,9 @@ albums from one artist get more equal tags.</p>
 <h5>
 <a id="various-option" class="anchor" href="#various-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>various option</h5>
 
-<p>Score multiplier similar to artist option, but this one applies to various
+<p>Score multiplier similar to the artist option, but this one applies to various
 artists releases if there is no albumartist and all the track artists get used
-for searching, which can be en/disabled with the <code>vaqueries</code> option (see above).
+for searching, which can be controlled with the <code>vaqueries</code> option (see above).
 For example: a 5 track va-album with 3 tracks from artist A and 2 tracks from
 artist B will get tags like this:</p>
 
@@ -335,12 +323,8 @@ artist B will get tags like this:</p>
 <h5>
 <a id="splitup-option" class="anchor" href="#splitup-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>splitup option</h5>
 
-<p>Score multiplier for modifying the score of the base tag from a tag that got
-split up by space. This enables you to decide whether to keep, prefer or ban
-the base tags. For example, lets say we have 'Alternative Rock' with a score
-of 1: It will end up as Alternative with score 1, Rock with score 1 and
-Alternative Rock with score <code>1 * &lt;splitup-score&gt;</code>. So if you don't want to keep
-Alternative Rock, just set it to 0.</p>
+<p>Score multiplier for modifying the score of a tag that got split up by space.
+This enables you to decide whether to keep, lessen or ignore the 'base' tags.</p>
 
 <p>Default <code>0.33</code>, Range <code>0.0 - 1.0</code></p>
 
@@ -348,9 +332,9 @@ Alternative Rock, just set it to 0.</p>
 <li>
 <code>= 0.0</code> forget about the base tags</li>
 <li>
-<code>&lt; 1.0</code> prefer split parts</li>
+<code>&lt; 1.0</code> reduce score of base tags</li>
 <li>
-<code>= 1.0</code> handle them equally</li>
+<code>= 1.0</code> leave score unmodified</li>
 </ul>
 
 <h5>
@@ -370,7 +354,7 @@ don't want tags from a specific source remove it from the sources list option.</
 <pre><code>usage: whatlastgenre [-h] [-v] [-n] [-u] [-l N] [-r] [-i] [-d] path [path ...]
 
 positional arguments:
-  path                 folder(s) to scan for albums
+  path                 directory(ies) to scan for albums
 
 optional arguments:
   -h, --help           show this help message and exit
@@ -391,7 +375,7 @@ might get less releasetypes.</p>
 
 <p>Remove the cache file to reset the cache or use <code>-u</code> to force cache updates.</p>
 
-<p>Don't waste your time running -n and -i together.</p>
+<p>Don't waste your time running <code>-n</code> and <code>-i</code> together.</p>
 
 <p>whatlastgenre doesn't correct any other tags. If your music files are badly or
 not tagged it won't work well at all.</p>
@@ -419,33 +403,54 @@ not tagged it won't work well at all.</p>
 
 <p>whatlastgenre can be used in other software via plugins.</p>
 
-<p>At the moment there is a plugin for beets.</p>
+<p>At the moment there is a <a href="plugin/beets">plugin for beets</a>.</p>
 
-<p>See README files in plugin folder for details.</p>
+<p>See README files in the <a href="plugin">plugin</a> directory for details.</p>
 
 <h2>
 <a id="help--debug" class="anchor" href="#help--debug" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help / Debug</h2>
 
-<p>In order to debug tag handling to improve the whitelist, aliases and replaces,
-you can do the following:</p>
+<h4>
+<a id="errors--bugs--crashes" class="anchor" href="#errors--bugs--crashes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors / Bugs / Crashes</h4>
 
-<p>Do a debug dry run and save output to log:</p>
+<p>If you encounter any strange errors (especially after updating to a later
+version), please delete the cache file and try again with an empty cache
+before reporting it (do a backup first in case it doesn't solve the issue).</p>
 
-<pre><code>whatlastgenre -nvv /media/music &gt; /tmp/wlg.log 2&gt;&amp;1
+<h4>
+<a id="mediaplayers-and-file-modification-times" class="anchor" href="#mediaplayers-and-file-modification-times" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mediaplayers and file modification times</h4>
+
+<p>Since file modification times are preserved, some players don't realize the
+changed genre metadata automatically and might require some manual steps.</p>
+
+<p>for example</p>
+
+<ul>
+<li>mpd: needs rescan instead of normal update to get the mpd database updated.</li>
+</ul>
+
+<h4>
+<a id="debug-tag-handling--improve-tag-results" class="anchor" href="#debug-tag-handling--improve-tag-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Debug tag handling / Improve tag results</h4>
+
+<p>In order to debug tag handling to improve the whitelist and tagsfile, you can
+do a debug dry run and save the output to a logfile (adjust path):</p>
+
+<pre><code>whatlastgenre -nvv /media/music &gt; /tmp/wlg.log
 </code></pre>
 
-<p>Search the log for specific lines:</p>
+<p>Then search the logfile for specific lines:</p>
 
-<pre><code>grep ^Error /tmp/wlg.log | sort -u | less
-grep ^tag /tmp/wlg.log | sort | uniq -c | sort -r | less
+<pre><code>grep ^tag /tmp/wlg.log | sort | uniq -c | sort -r | less
 </code></pre>
 
-<p>Use the results to add missing whitelist entries, aliases or replaces.
-Share your improvements to the data/*.txt files if you like.</p>
+<p>Use the results to add missing whitelist entries, aliases or replaces.</p>
 
-<p>Feel free to send me your log file so i can use it for debugging myself.</p>
+<p>Feel free to share your improvements to the <a href="wlg/data">data/*.txt</a> files or
+send me your logfile so i can use it for debugging myself.</p>
 
-<p>Please report any bugs and errors you encounter, i would like to fix them :)</p>
+<p>Another way to find possbile aliases is using the difflib <code>-d</code> argument.</p>
+
+<p>Please report any bugs and errors, i would like to fix them :)</p>
       </section>
     </div>
 
