@@ -38,7 +38,8 @@
 
 <ul>
 <li>Supported audio files: flac, ogg, mp3, m4a</li>
-<li>Supported music sites: What.CD, Last.FM, Discogs, MusicBrainz, EchoNest</li>
+<li>Supported music sites: What.CD, Last.FM, Discogs, MusicBrainz, RateYourMusic,
+EchoNest</li>
 <li>Feature Overview
 
 <ul>
@@ -93,7 +94,7 @@ tag gets a score of <code>1.0</code>, a tag having only half of the top tag's co
 a score of <code>0.5</code> and so on.</p>
 
 <h5>
-<a id="tag-scoring-without-count-whatcd-album-discogs-echonest-genres" class="anchor" href="#tag-scoring-without-count-whatcd-album-discogs-echonest-genres" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring without count (What.CD album, Discogs, EchoNest genres)</h5>
+<a id="tag-scoring-without-count-whatcd-album-discogs-rateyourmusic-echonest-genres" class="anchor" href="#tag-scoring-without-count-whatcd-album-discogs-rateyourmusic-echonest-genres" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring without count (What.CD album, Discogs, RateYourMusic, EchoNest genres)</h5>
 
 <p>Tags supplied without a count will be scored <code>max(1/3, 0.85^(n-1))</code>, where <code>n</code>
 is the total number of tags supplied by this source. The more tags the lower
@@ -124,7 +125,7 @@ See <code>vaqueries</code> and <code>various</code> options below.</p>
 
 <p>Mutagen's ID3 API is primary targeted at id3v2.4, so by default any id3 tags
 will be upgraded to 2.4 and saving a file will make it 2.4 as well.
-See <a href="https://mutagen.readthedocs.org/en/latest/tutorial.html#id3-versions">mutagen doc here</a>
+See <a href="https://mutagen.readthedocs.org/en/latest/tutorial.html#id3-versions">mutagen doc</a>
 for details.
 However, if you don't want to use v2.4 tags you can use the <code>id3v23sep</code> config
 option explained below.</p>
@@ -174,6 +175,10 @@ cloned/extracted to</li>
 <code>rauth</code> is required for Discogs. If you want to use Discogs, install <code>rauth</code>
 with pip like above and activate <code>discogs</code> in the config file (see below).</li>
 <li>
+<code>lxml</code> is required for RateYourMusic. If you want to use RateYourMusic,
+install <code>lxml</code> with pip like above and activate <code>rymusic</code> in the config file
+(see below).</li>
+<li>
 <code>requests-cache</code> can additionally cache the raw queries from requests if
 installed. This is mainly a developers feature.</li>
 </ul>
@@ -205,6 +210,7 @@ src_whatcd = 1.50
 src_lastfm = 0.66
 src_discogs = 1.00
 src_mbrainz = 0.66
+src_rymusic = 1.33
 src_echonest = 1.00
 </code></pre>
 
@@ -222,22 +228,31 @@ src_echonest = 1.00
 <ul>
 <li>
 <code>whatcd</code> [<a href="https://what.cd">URL</a>]
-well-kept tags from community</li>
+well-kept tags from community, requires own account</li>
 <li>
 <code>lastfm</code> [<a href="http://last.fm">URL</a>]
 many personal tags from users</li>
 <li>
 <code>discogs</code> [<a href="http://discogs.com">URL</a>]
 album only, fixed list of <a href="http://www.discogs.com/help/doc/submission-guidelines-release-genres-styles">genres and styles</a>,
-requires authentication (own account needed)</li>
+requires own account</li>
 <li>
 <code>mbrainz</code> [<a href="http://musicbrainz.org">URL</a>]
 home of mbids</li>
+<li>
+<code>rymusic</code> [<a href="http://rateyourmusic.com">URL</a>]
+no real api (slow)</li>
 <li>
 <code>echonest</code> [<a href="http://echonest.com">URL</a>]
 artist only, genres without counts and terms with counts (see
 <a href="http://developer.echonest.com/docs/v4/">doc</a>)</li>
 </ul>
+
+<h5>
+<a id="whatcduser-and-whatcdpass-options" class="anchor" href="#whatcduser-and-whatcdpass-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>whatcduser and whatcdpass options</h5>
+
+<p>Credentials for What.CD. Storing the password in the config file is optional,
+if you only set your username you will be asked for the password every run.</p>
 
 <h5>
 <a id="whitelist-option" class="anchor" href="#whitelist-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>whitelist option</h5>
@@ -250,7 +265,7 @@ if empty (default). Make sure the aliases and replacements from
 <a id="vaqueries-option" class="anchor" href="#vaqueries-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>vaqueries option</h5>
 
 <p>Search for all artists if there is no albumartist on albums with various
-artists. This will make queries for va-albums without albumartist take
+artists. This will make queries for va-albums without an albumartist take
 significantly longer, but yields more results. (Default: <code>True</code>)
 See <code>various</code> score option below.</p>
 
@@ -289,7 +304,7 @@ albums from one artist get more equal tags.</p>
 
 <p><code>&lt;artist tags&gt; * &lt;artist score&gt; + &lt;album tags&gt;</code></p>
 
-<p>Default <code>1.33</code>, Range <code>0.5 - 2.0</code></p>
+<p>Default <code>1.33</code></p>
 
 <ul>
 <li>
@@ -311,7 +326,7 @@ artist B will get tags like this:</p>
 
 <p><code>(3 * &lt;artist A tags&gt; + 2 * &lt;artist B tags&gt;) * &lt;various score&gt; + &lt;album tags&gt;</code></p>
 
-<p>Default <code>0.66</code>, Range <code>0.1 - 1.0</code></p>
+<p>Default <code>0.66</code></p>
 
 <ul>
 <li>
@@ -326,7 +341,7 @@ artist B will get tags like this:</p>
 <p>Score multiplier for modifying the score of a tag that got split up by space.
 This enables you to decide whether to keep, lessen or ignore the 'base' tags.</p>
 
-<p>Default <code>0.33</code>, Range <code>0.0 - 1.0</code></p>
+<p>Default <code>0.33</code></p>
 
 <ul>
 <li>
@@ -346,7 +361,7 @@ provide bad, inaccurate or personal tags. Increase if you trust the tags from
 a source, lower if the source provides many inaccurate or personal tags. If you
 don't want tags from a specific source remove it from the sources list option.</p>
 
-<p>Default <code>1.0</code>, Range <code>0.5 - 2.0</code>. See <code>sources</code> option above.</p>
+<p>Default <code>1.0</code>, see <code>sources</code> option above.</p>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
@@ -354,7 +369,7 @@ don't want tags from a specific source remove it from the sources list option.</
 <pre><code>usage: whatlastgenre [-h] [-v] [-n] [-u] [-l N] [-r] [-i] [-d] path [path ...]
 
 positional arguments:
-  path                 directory(ies) to scan for albums
+  path                 path(s) to scan for albums
 
 optional arguments:
   -h, --help           show this help message and exit
@@ -421,9 +436,7 @@ before reporting it (do a backup first in case it doesn't solve the issue).</p>
 <a id="mediaplayers-and-file-modification-times" class="anchor" href="#mediaplayers-and-file-modification-times" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mediaplayers and file modification times</h4>
 
 <p>Since file modification times are preserved, some players don't realize the
-changed genre metadata automatically and might require some manual steps.</p>
-
-<p>for example</p>
+changed genre metadata automatically and might require some manual steps, e.g.:</p>
 
 <ul>
 <li>mpd: needs rescan instead of normal update to get the mpd database updated.</li>
@@ -451,6 +464,8 @@ send me your logfile so i can use it for debugging myself.</p>
 <p>Another way to find possbile aliases is using the difflib <code>-d</code> argument.</p>
 
 <p>Please report any bugs and errors, i would like to fix them :)</p>
+
+<p>Thanks to everyone who made suggestions and reported problems &lt;3</p>
       </section>
     </div>
 
