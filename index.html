@@ -38,8 +38,7 @@
 
 <ul>
 <li>Supported audio files: flac, ogg, mp3, m4a</li>
-<li>Supported music sites: What.CD, Last.FM, Discogs, MusicBrainz, RateYourMusic,
-EchoNest</li>
+<li>Supported music sites: Discogs, EchoNest, Last.FM, MusicBrainz, RateYourMusic, What.CD</li>
 <li>Feature Overview
 
 <ul>
@@ -47,26 +46,22 @@ EchoNest</li>
 eligible ones.
 
 <ul>
-<li>Merges similar tags in different writings with aliases and regex
-replacements to ensure consistent naming,
-eg. DnB, D&amp;B, Drum and Bass -&gt; Drum &amp; Bass;
-Alt., Altern, Alterneitif -&gt; Alternative</li>
-<li>Splits tags in various applicable ways, eg.
-Jazz/Funk&amp;Rock -&gt; Jazz, Funk, Rock;
-Alternative Rock -&gt; Alternative, Rock</li>
-<li>Uses a whitelist to avoid crappy tags (see
-<a href="wlg/data/genres.txt">genres.txt</a>)</li>
+<li>Merges similar tags in different writings to ensure consistent naming
+via <a href="wlg/data/tags.txt">aliases and regex</a>
+</li>
+<li>Splits tags in various applicable ways</li>
+<li>Uses a <a href="wlg/data/genres.txt">whitelist</a> to avoid bad tags</li>
 <li>Scores tags while taking personal preferences into account</li>
 </ul>
 </li>
-<li>Caches all data received from music sites to make reruns super fast</li>
+<li>Caches all data received from music sites to speedup reruns</li>
 <li>Uses MusicBrainz IDs for searching when available</li>
-<li>Optional: gets release type (Album, EP, Anthology, ...) from What.CD
-(with interactivity mode for ambiguous results)</li>
+<li>Optional: gets release info from whatcd (with interactivity if ambiguous)</li>
 <li>Can be used as plugin in other software, currently:
 <a href="https://github.com/sampsyo/beets">beets</a>
 </li>
 <li>Dry-mode for safe testing</li>
+<li><a href="https://gist.github.com/YetAnotherNerd/3e59c4d02f1930d9e52e">Example output</a></li>
 </ul>
 </li>
 </ul>
@@ -86,7 +81,10 @@ preferences into account. Please take a look at "Configuration options
 explained" below for more details.</p>
 
 <h5>
-<a id="tag-scoring-with-count-whatcd-artist-lastfm-musicbrainz-echonest-terms" class="anchor" href="#tag-scoring-with-count-whatcd-artist-lastfm-musicbrainz-echonest-terms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring with count (What.CD artist, Last.FM, MusicBrainz, EchoNest terms)</h5>
+<a id="tag-scoring-with-countweights" class="anchor" href="#tag-scoring-with-countweights" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring with count/weights</h5>
+
+<pre><code>echonest terms, lastfm, mbrainz, whatcd artist
+</code></pre>
 
 <p>If counts are supplied for the tags they will get scored by <code>count/topcount</code>,
 where <code>topcount</code> is the highest count of all tags from a source. So the top
@@ -94,7 +92,10 @@ tag gets a score of <code>1.0</code>, a tag having only half of the top tag's co
 a score of <code>0.5</code> and so on.</p>
 
 <h5>
-<a id="tag-scoring-without-count-whatcd-album-discogs-rateyourmusic-echonest-genres" class="anchor" href="#tag-scoring-without-count-whatcd-album-discogs-rateyourmusic-echonest-genres" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring without count (What.CD album, Discogs, RateYourMusic, EchoNest genres)</h5>
+<a id="tag-scoring-without-countsweights" class="anchor" href="#tag-scoring-without-countsweights" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring without counts/weights</h5>
+
+<pre><code> echonest genres, discogs, rymusic, whatcd album
+</code></pre>
 
 <p>Tags supplied without a count will be scored <code>max(1/3, 0.85^(n-1))</code>, where <code>n</code>
 is the total number of tags supplied by this source. The more tags the lower
@@ -131,19 +132,17 @@ However, if you don't want to use v2.4 tags you can use the <code>id3v23sep</cod
 option explained below.</p>
 
 <h5>
-<a id="interactivity-while-tagging-releasetypes" class="anchor" href="#interactivity-while-tagging-releasetypes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interactivity (while tagging releasetypes)</h5>
+<a id="release-info-tagging-and-interactitvity" class="anchor" href="#release-info-tagging-and-interactitvity" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release info tagging and interactitvity</h5>
 
-<p>Sometimes a dataprovider returns more than one result of tags (eg. different
-editions of the same album or album and single with the same name). This is not
-a problem since these results often contain very similar tags that can simply
-be merged together. However, to tag releasetypes it is necessary to know the
-right result, so some user input might be required when the results have
-different releasetypes, but several steps are taken to reduce needed
-interactivity, like filtering by snatched flag (make sure to enable 'Snatched
-torrents indicator' in your whatcd profile settings) or by year (if given).</p>
+<pre><code>releasetype, year, label, catalog, edition, media
+</code></pre>
 
-<p>So, interactivity is only needed for setting proper releasetypes
-in some ambiguous cases.</p>
+<p>Although several steps are taken to reduce needed interactivity, like filtering
+by snatched flag (make sure to enable 'Snatched torrents indicator' in your
+whatcd profile settings) or by year (if given), user input might be required
+while tagging releaseinfo in ambigious cases.
+<code>-r</code> implies interactivity, <code>n</code> disables interactivity. Be aware that <code>-r</code>
+saves the original release year into the <code>date</code> metadata field.</p>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
@@ -193,10 +192,9 @@ installed. This is mainly a developers feature.</li>
 <a id="example-configuration-file" class="anchor" href="#example-configuration-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example configuration file</h3>
 
 <pre><code>[wlg]
-sources = whatcd, lastfm, discogs, mbrainz, echonest
-whatcduser = whatusername
-whatcdpass = whatpassword
+sources = discogs, echonest, lastfm, mbrainz, whatcd
 whitelist =
+tagsfile =
 vaqueries = True
 id3v23_sep =
 [genres]
@@ -206,12 +204,18 @@ hate = alternative, electronic, indie, pop, rock
 artist = 1.33
 various = 0.66
 splitup = 0.33
-src_whatcd = 1.50
-src_lastfm = 0.66
+minimum = 0.10
 src_discogs = 1.00
+src_echonest = 1.00
+src_lastfm = 0.66
 src_mbrainz = 0.66
 src_rymusic = 1.33
-src_echonest = 1.00
+src_whatcd = 1.50
+[discogs]
+token =
+secret =
+[whatcd]
+session =
 </code></pre>
 
 <h3>
@@ -223,43 +227,70 @@ src_echonest = 1.00
 <h5>
 <a id="sources-option" class="anchor" href="#sources-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>sources option</h5>
 
-<p>The music sites where to get the genre tags from.</p>
-
-<ul>
-<li>
-<code>whatcd</code> [<a href="https://what.cd">URL</a>]
-well-kept tags from community, requires own account</li>
-<li>
-<code>lastfm</code> [<a href="http://last.fm">URL</a>]
-many personal tags from users</li>
-<li>
-<code>discogs</code> [<a href="http://discogs.com">URL</a>]
-album only, fixed list of <a href="http://www.discogs.com/help/doc/submission-guidelines-release-genres-styles">genres and styles</a>,
-requires own account</li>
-<li>
-<code>mbrainz</code> [<a href="http://musicbrainz.org">URL</a>]
-home of mbids</li>
-<li>
-<code>rymusic</code> [<a href="http://rateyourmusic.com">URL</a>]
-no real api (slow)</li>
-<li>
-<code>echonest</code> [<a href="http://echonest.com">URL</a>]
-artist only, genres without counts and terms with counts (see
-<a href="http://developer.echonest.com/docs/v4/">doc</a>)</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th align="center">Artist</th>
+<th align="center">Album</th>
+<th align="center">Auth</th>
+<th>...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://discogs.com">discogs</a></td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td>fixed list of <a href="http://www.discogs.com/help/doc/submission-guidelines-release-genres-styles">genres and styles</a>
+</td>
+</tr>
+<tr>
+<td><a href="http://echonest.com">echonest</a></td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td>genres without counts and terms with counts (see <a href="http://developer.echonest.com/docs/v4/">doc</a>)</td>
+</tr>
+<tr>
+<td><a href="http://last.fm">lastfm</a></td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td>many personal tags from users</td>
+</tr>
+<tr>
+<td><a href="http://musicbrainz.org">mbrainz</a></td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td>home of mbids</td>
+</tr>
+<tr>
+<td><a href="http://rateyourmusic.com">rymusic</a></td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td>no real api (slow)</td>
+</tr>
+<tr>
+<td><a href="https://what.cd">whatcd</a></td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td>well-kept tags from community</td>
+</tr>
+</tbody>
+</table>
 
 <h5>
-<a id="whatcduser-and-whatcdpass-options" class="anchor" href="#whatcduser-and-whatcdpass-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>whatcduser and whatcdpass options</h5>
+<a id="whitelisttagsfile-option" class="anchor" href="#whitelisttagsfile-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>whitelist/tagsfile option</h5>
 
-<p>Credentials for What.CD. Storing the password in the config file is optional,
-if you only set your username you will be asked for the password every run.</p>
-
-<h5>
-<a id="whitelist-option" class="anchor" href="#whitelist-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>whitelist option</h5>
-
-<p>Path to your custom whitelist. Use <a href="wlg/data/genres.txt">shipped whitelist</a>
-if empty (default). Make sure the aliases and replacements from
-<a href="wlg/data/tags.txt">tags.txt</a> fit the used whitelist.</p>
+<p>Path to your custom whitelist and tagsfile. Use shipped
+<a href="wlg/data/genres.txt">whitelist</a>/<a href="wlg/data/tags.txt">tagsfile</a>
+if empty (default). Instead of setting the path here, you can also put the
+files in your config directory and they should get recognized (see debug log).</p>
 
 <h5>
 <a id="vaqueries-option" class="anchor" href="#vaqueries-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>vaqueries option</h5>
@@ -353,6 +384,21 @@ This enables you to decide whether to keep, lessen or ignore the 'base' tags.</p
 </ul>
 
 <h5>
+<a id="minimum-option" class="anchor" href="#minimum-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>minimum option</h5>
+
+<p>Minimum score for final filtering.</p>
+
+<p>Default <code>0.10</code></p>
+
+<ul>
+<li>
+<code>= 0.0</code> no minimum score</li>
+<li>
+<code>= 1.0</code> same effect as <code>--tag-limit 1</code>
+</li>
+</ul>
+
+<h5>
 <a id="src_-options" class="anchor" href="#src_-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>src_* options</h5>
 
 <p>Every source has its own score multiplier, so music sites that generally
@@ -363,10 +409,23 @@ don't want tags from a specific source remove it from the sources list option.</
 
 <p>Default <code>1.0</code>, see <code>sources</code> option above.</p>
 
+<h4>
+<a id="dataprovider-related-sections" class="anchor" href="#dataprovider-related-sections" aria-hidden="true"><span class="octicon octicon-link"></span></a>dataprovider related sections</h4>
+
+<h5>
+<a id="discogs-token-and-secret-options" class="anchor" href="#discogs-token-and-secret-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>discogs token and secret options</h5>
+
+<p>Authentication information for discogs, will be set interactivly.</p>
+
+<h5>
+<a id="whatcd-session-options" class="anchor" href="#whatcd-session-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>whatcd session options</h5>
+
+<p>Session cookie, will be received by interactively entering user credentials.</p>
+
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<pre><code>usage: whatlastgenre [-h] [-v] [-n] [-u] [-l N] [-r] [-i] [-d] path [path ...]
+<pre><code>usage: whatlastgenre [-h] [-v] [-n] [-u] [-l N] [-r] [-d] path [path ...]
 
 positional arguments:
   path                 path(s) to scan for albums
@@ -377,20 +436,15 @@ optional arguments:
   -n, --dry            don't save metadata (default: False)
   -u, --update-cache   force cache update (default: False)
   -l N, --tag-limit N  max. number of genre tags (default: 4)
-  -r, --tag-release    tag release type (from What.CD) (default: False)
-  -i, --interactive    interactive mode (default: False)
+  -r, --release        get release info from whatcd (default: False)
   -d, --difflib        enable difflib matching (slow) (default: False)
 </code></pre>
 
-<p>If you seriously want to tag releasetypes <code>-r</code> you should also enable
-interactive mode <code>-i</code>. I recommend first doing a dry-run to fill the cache and
-then doing a normal run with <code>-ri</code> enabled. This way you can choose the right
-results without much waiting time in between. You can use <code>-r</code> without <code>-i</code> but
-might get less releasetypes.</p>
+<p>If you want to tag releasetypes <code>-r</code>, you should do a dry-run beforehand to
+fill the cache and then be able to choose the right results without much
+waiting time in between.</p>
 
 <p>Remove the cache file to reset the cache or use <code>-u</code> to force cache updates.</p>
-
-<p>Don't waste your time running <code>-n</code> and <code>-i</code> together.</p>
 
 <p>whatlastgenre doesn't correct any other tags. If your music files are badly or
 not tagged it won't work well at all.</p>
@@ -408,9 +462,9 @@ not tagged it won't work well at all.</p>
 <pre><code>whatlastgenre -l 3 /media/music /home/user/music
 </code></pre>
 
-<p>Tag releasetypes and up to 4 genre tags for all albums in /media/music:</p>
+<p>Tag releaseinfo and up to 4 genre tags for all albums in /media/music:</p>
 
-<pre><code>whatlastgenre -ri /media/music
+<pre><code>whatlastgenre -r /media/music
 </code></pre>
 
 <h2>
