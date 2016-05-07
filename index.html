@@ -32,7 +32,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a id="whatlastgenre" class="anchor" href="#whatlastgenre" aria-hidden="true"><span class="octicon octicon-link"></span></a>whatlastgenre</h1>
+<a id="whatlastgenre" class="anchor" href="#whatlastgenre" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>whatlastgenre</h1>
 
 <p>Improve genre metadata of audio files based on tags from various music sites.</p>
 
@@ -58,16 +58,16 @@ via <a href="wlg/data/tags.txt">aliases and regex</a>
 <li>Uses MusicBrainz IDs for searching when available</li>
 <li>Optional: gets release info from whatcd (with interactivity if ambiguous)</li>
 <li>Can be used as plugin in other software, currently:
-<a href="https://github.com/sampsyo/beets">beets</a>
+<a href="https://github.com/beetbox/beets">beets</a>
 </li>
 <li>Dry-mode for safe testing</li>
-<li><a href="https://gist.github.com/YetAnotherNerd/3e59c4d02f1930d9e52e">Example output</a></li>
 </ul>
 </li>
+<li><a href="https://gist.github.com/YetAnotherNerd/3e59c4d02f1930d9e52e">Example output</a></li>
 </ul>
 
 <h2>
-<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How it works</h2>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How it works</h2>
 
 <p>It scans through directories for albums and receives genre tags for them and
 their artists from selected music sites. Equal tags in different writings will
@@ -81,7 +81,7 @@ preferences into account. Please take a look at "Configuration options
 explained" below for more details.</p>
 
 <h5>
-<a id="tag-scoring-with-countweights" class="anchor" href="#tag-scoring-with-countweights" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring with count/weights</h5>
+<a id="tag-scoring-with-countsweights" class="anchor" href="#tag-scoring-with-countsweights" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tag scoring with counts/weights</h5>
 
 <pre><code>echonest terms, lastfm, mbrainz, whatcd artist
 </code></pre>
@@ -92,9 +92,9 @@ tag gets a score of <code>1.0</code>, a tag having only half of the top tag's co
 a score of <code>0.5</code> and so on.</p>
 
 <h5>
-<a id="tag-scoring-without-countsweights" class="anchor" href="#tag-scoring-without-countsweights" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring without counts/weights</h5>
+<a id="tag-scoring-without-countsweights" class="anchor" href="#tag-scoring-without-countsweights" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tag scoring without counts/weights</h5>
 
-<pre><code> echonest genres, discogs, rymusic, whatcd album
+<pre><code> discogs, echonest genres, rymusic, whatcd album
 </code></pre>
 
 <p>Tags supplied without a count will be scored <code>max(1/3, 0.85^(n-1))</code>, where <code>n</code>
@@ -104,7 +104,7 @@ score of <code>1.0</code>, two tags will get a score of <code>0.85</code> each a
 score is <code>1/3</code>, which applies if there are more than 7 tags supplied.</p>
 
 <h5>
-<a id="tag-merging-of-artist-and-album-tags" class="anchor" href="#tag-merging-of-artist-and-album-tags" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag merging of artist and album tags</h5>
+<a id="tag-merging-of-artist-and-album-tags" class="anchor" href="#tag-merging-of-artist-and-album-tags" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tag merging of artist and album tags</h5>
 
 <p>After all tags have been gathered the scores of album and artist tags will be
 scaled and then merged together taking the artist score modifier option into
@@ -114,7 +114,7 @@ searches.
 See <code>artist</code> score option below.</p>
 
 <h5>
-<a id="tag-scoring-for-various-artist-albums-without-any-specific-album-artist" class="anchor" href="#tag-scoring-for-various-artist-albums-without-any-specific-album-artist" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tag scoring for various artist albums without any specific album artist</h5>
+<a id="tag-scoring-for-various-artist-albums-without-any-specific-album-artist" class="anchor" href="#tag-scoring-for-various-artist-albums-without-any-specific-album-artist" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tag scoring for various artist albums without any specific album artist</h5>
 
 <p>If there is no specific album artist for a various artist album every track
 artist can get used for searching. Tags for artists that appear multiple times
@@ -122,7 +122,7 @@ in that album get counted multiple times.
 See <code>vaqueries</code> and <code>various</code> options below.</p>
 
 <h5>
-<a id="multiple-value-metadata-and-old-id3-versions" class="anchor" href="#multiple-value-metadata-and-old-id3-versions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Multiple value metadata and old ID3 versions</h5>
+<a id="multiple-value-metadata-and-old-id3-versions" class="anchor" href="#multiple-value-metadata-and-old-id3-versions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Multiple value metadata and old ID3 versions</h5>
 
 <p>Mutagen's ID3 API is primary targeted at id3v2.4, so by default any id3 tags
 will be upgraded to 2.4 and saving a file will make it 2.4 as well.
@@ -132,20 +132,20 @@ However, if you don't want to use v2.4 tags you can use the <code>id3v23sep</cod
 option explained below.</p>
 
 <h5>
-<a id="release-info-tagging-and-interactitvity" class="anchor" href="#release-info-tagging-and-interactitvity" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release info tagging and interactitvity</h5>
+<a id="release-info-tagging-and-interactivity" class="anchor" href="#release-info-tagging-and-interactivity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Release info tagging and interactivity</h5>
 
 <pre><code>releasetype, year, label, catalog, edition, media
 </code></pre>
 
-<p>Although several steps are taken to reduce needed interactivity, like filtering
-by snatched flag (make sure to enable 'Snatched torrents indicator' in your
-whatcd profile settings) or by year (if given), user input might be required
-while tagging releaseinfo in ambigious cases.
-<code>-r</code> implies interactivity, <code>n</code> disables interactivity. Be aware that <code>-r</code>
-saves the original release year into the <code>date</code> metadata field.</p>
+<p>Releaseinfo can be tagged for snatched torrents (make sure to enable 'Snatched
+torrents indicator' in your whatcd profile settings). Although prefiltering
+tries to minimize needed user input, some might be required in ambiguous cases
+while tagging releaseinfo. <code>-r</code> implies interactivity, <code>-n</code> disables
+interactivity. Be aware that <code>-r</code> saves the original release year into the
+<code>date</code> metadata field.</p>
 
 <h2>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>You'll need Python 2.7.</p>
 
@@ -167,7 +167,7 @@ cloned/extracted to</li>
 </ul>
 
 <h5>
-<a id="optional-dependencies" class="anchor" href="#optional-dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optional dependencies</h5>
+<a id="optional-dependencies" class="anchor" href="#optional-dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Optional dependencies</h5>
 
 <ul>
 <li>
@@ -183,13 +183,13 @@ installed. This is mainly a developers feature.</li>
 </ul>
 
 <h2>
-<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h2>
 
 <p>A configuration file with default values will be created at
 <code>~/.whatlastgenre/config</code> on first run.</p>
 
 <h3>
-<a id="example-configuration-file" class="anchor" href="#example-configuration-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example configuration file</h3>
+<a id="example-configuration-file" class="anchor" href="#example-configuration-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example configuration file</h3>
 
 <pre><code>[wlg]
 sources = discogs, echonest, lastfm, mbrainz, whatcd
@@ -219,13 +219,13 @@ session =
 </code></pre>
 
 <h3>
-<a id="configuration-options-explained" class="anchor" href="#configuration-options-explained" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration options explained</h3>
+<a id="configuration-options-explained" class="anchor" href="#configuration-options-explained" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration options explained</h3>
 
 <h4>
-<a id="whatlastgenre-wlg-section" class="anchor" href="#whatlastgenre-wlg-section" aria-hidden="true"><span class="octicon octicon-link"></span></a>whatlastgenre (wlg) section</h4>
+<a id="whatlastgenre-wlg-section" class="anchor" href="#whatlastgenre-wlg-section" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>whatlastgenre (wlg) section</h4>
 
 <h5>
-<a id="sources-option" class="anchor" href="#sources-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>sources option</h5>
+<a id="sources-option" class="anchor" href="#sources-option" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>sources option</h5>
 
 <table>
 <thead>
@@ -251,7 +251,8 @@ session =
 <td align="center">1</td>
 <td align="center">0</td>
 <td align="center">0</td>
-<td>genres without counts and terms with counts (see <a href="http://developer.echonest.com/docs/v4/">doc</a>)</td>
+<td>
+<a href="http://developer.echonest.com/docs/v4/">genres/terms</a> with and w/o counts</td>
 </tr>
 <tr>
 <td><a href="http://last.fm">lastfm</a></td>
@@ -285,7 +286,7 @@ session =
 </table>
 
 <h5>
-<a id="whitelisttagsfile-option" class="anchor" href="#whitelisttagsfile-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>whitelist/tagsfile option</h5>
+<a id="whitelisttagsfile-option" class="anchor" href="#whitelisttagsfile-option" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>whitelist/tagsfile option</h5>
 
 <p>Path to your custom whitelist and tagsfile. Use shipped
 <a href="wlg/data/genres.txt">whitelist</a>/<a href="wlg/data/tags.txt">tagsfile</a>
@@ -293,7 +294,7 @@ if empty (default). Instead of setting the path here, you can also put the
 files in your config directory and they should get recognized (see debug log).</p>
 
 <h5>
-<a id="vaqueries-option" class="anchor" href="#vaqueries-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>vaqueries option</h5>
+<a id="vaqueries-option" class="anchor" href="#vaqueries-option" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>vaqueries option</h5>
 
 <p>Search for all artists if there is no albumartist on albums with various
 artists. This will make queries for va-albums without an albumartist take
@@ -301,21 +302,21 @@ significantly longer, but yields more results. (Default: <code>True</code>)
 See <code>various</code> score option below.</p>
 
 <h5>
-<a id="id3v23sep-option" class="anchor" href="#id3v23sep-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>id3v23sep option</h5>
+<a id="id3v23sep-option" class="anchor" href="#id3v23sep-option" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>id3v23sep option</h5>
 
 <p>By (mutagen) default all id3 v2.3 tags will be upgraded to v2.4. Since v2.3
-can't store multiple value metadata you need to set a seperator if you intend
+can't store multiple value metadata you need to set a separator if you intend
 to use old v2.3 tags (not recommended).
 Setting this to a non-empty value (for example <code>,</code>) will downgrade all id3 tags
-to v2.3 and store all genres in one tag seperated by <code>id3v23sep</code> instead of
-using v2.4 tags that can have multiple values. Empty by defaut.
+to v2.3 and store all genres in one tag separated by <code>id3v23sep</code> instead of
+using v2.4 tags that can have multiple values. Empty by default.
 You should upgrade your other software to support id3v24 instead of using this.</p>
 
 <h4>
-<a id="genres-section" class="anchor" href="#genres-section" aria-hidden="true"><span class="octicon octicon-link"></span></a>genres section</h4>
+<a id="genres-section" class="anchor" href="#genres-section" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>genres section</h4>
 
 <h5>
-<a id="love-and-hate-options" class="anchor" href="#love-and-hate-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>love and hate options</h5>
+<a id="love-and-hate-options" class="anchor" href="#love-and-hate-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>love and hate options</h5>
 
 <p>List of tags that get a multiplier bonus of <code>2.0</code> and <code>0.5</code> respectively.
 Should be considered as "soft white-/blacklist" where you can in-/decrease the
@@ -323,10 +324,10 @@ occurrence of specific tags that you don't like or that are too inaccurate for
 you without fully banning them.</p>
 
 <h4>
-<a id="scores-section" class="anchor" href="#scores-section" aria-hidden="true"><span class="octicon octicon-link"></span></a>scores section</h4>
+<a id="scores-section" class="anchor" href="#scores-section" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>scores section</h4>
 
 <h5>
-<a id="artist-option" class="anchor" href="#artist-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>artist option</h5>
+<a id="artist-option" class="anchor" href="#artist-option" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>artist option</h5>
 
 <p>Score multiplier to give tags found by albumartist searches advantage over tags
 from album searches. The tags get stored separately at first but then put
@@ -347,7 +348,7 @@ albums from one artist get more equal tags.</p>
 </ul>
 
 <h5>
-<a id="various-option" class="anchor" href="#various-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>various option</h5>
+<a id="various-option" class="anchor" href="#various-option" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>various option</h5>
 
 <p>Score multiplier similar to the artist option, but this one applies to various
 artists releases if there is no albumartist and all the track artists get used
@@ -367,7 +368,7 @@ artist B will get tags like this:</p>
 </ul>
 
 <h5>
-<a id="splitup-option" class="anchor" href="#splitup-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>splitup option</h5>
+<a id="splitup-option" class="anchor" href="#splitup-option" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>splitup option</h5>
 
 <p>Score multiplier for modifying the score of a tag that got split up by space.
 This enables you to decide whether to keep, lessen or ignore the 'base' tags.</p>
@@ -384,7 +385,7 @@ This enables you to decide whether to keep, lessen or ignore the 'base' tags.</p
 </ul>
 
 <h5>
-<a id="minimum-option" class="anchor" href="#minimum-option" aria-hidden="true"><span class="octicon octicon-link"></span></a>minimum option</h5>
+<a id="minimum-option" class="anchor" href="#minimum-option" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>minimum option</h5>
 
 <p>Minimum score for final filtering.</p>
 
@@ -399,7 +400,7 @@ This enables you to decide whether to keep, lessen or ignore the 'base' tags.</p
 </ul>
 
 <h5>
-<a id="src_-options" class="anchor" href="#src_-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>src_* options</h5>
+<a id="src_-options" class="anchor" href="#src_-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>src_* options</h5>
 
 <p>Every source has its own score multiplier, so music sites that generally
 provide higher quality tags can be given advantage over sources that often
@@ -410,20 +411,20 @@ don't want tags from a specific source remove it from the sources list option.</
 <p>Default <code>1.0</code>, see <code>sources</code> option above.</p>
 
 <h4>
-<a id="dataprovider-related-sections" class="anchor" href="#dataprovider-related-sections" aria-hidden="true"><span class="octicon octicon-link"></span></a>dataprovider related sections</h4>
+<a id="dataprovider-related-sections" class="anchor" href="#dataprovider-related-sections" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>dataprovider related sections</h4>
 
 <h5>
-<a id="discogs-token-and-secret-options" class="anchor" href="#discogs-token-and-secret-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>discogs token and secret options</h5>
+<a id="discogs-token-and-secret-options" class="anchor" href="#discogs-token-and-secret-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>discogs token and secret options</h5>
 
-<p>Authentication information for discogs, will be set interactivly.</p>
+<p>Authentication information for discogs, will be set interactively.</p>
 
 <h5>
-<a id="whatcd-session-options" class="anchor" href="#whatcd-session-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>whatcd session options</h5>
+<a id="whatcd-session-options" class="anchor" href="#whatcd-session-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>whatcd session options</h5>
 
 <p>Session cookie, will be received by interactively entering user credentials.</p>
 
 <h2>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
 <pre><code>usage: whatlastgenre [-h] [-v] [-n] [-u] [-l N] [-r] [-d] path [path ...]
 
@@ -450,7 +451,7 @@ waiting time in between.</p>
 not tagged it won't work well at all.</p>
 
 <h3>
-<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h3>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h3>
 
 <p>Do a verbose dry-run on your albums in /media/music changing nothing:</p>
 
@@ -468,7 +469,7 @@ not tagged it won't work well at all.</p>
 </code></pre>
 
 <h2>
-<a id="plugins" class="anchor" href="#plugins" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plugins</h2>
+<a id="plugins" class="anchor" href="#plugins" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plugins</h2>
 
 <p>whatlastgenre can be used in other software via plugins.</p>
 
@@ -477,17 +478,17 @@ not tagged it won't work well at all.</p>
 <p>See README files in the <a href="plugin">plugin</a> directory for details.</p>
 
 <h2>
-<a id="help--debug" class="anchor" href="#help--debug" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help / Debug</h2>
+<a id="help--debug" class="anchor" href="#help--debug" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Help / Debug</h2>
 
 <h4>
-<a id="errors--bugs--crashes" class="anchor" href="#errors--bugs--crashes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors / Bugs / Crashes</h4>
+<a id="errors--bugs--crashes" class="anchor" href="#errors--bugs--crashes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Errors / Bugs / Crashes</h4>
 
 <p>If you encounter any strange errors (especially after updating to a later
 version), please delete the cache file and try again with an empty cache
 before reporting it (do a backup first in case it doesn't solve the issue).</p>
 
 <h4>
-<a id="mediaplayers-and-file-modification-times" class="anchor" href="#mediaplayers-and-file-modification-times" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mediaplayers and file modification times</h4>
+<a id="mediaplayers-and-file-modification-times" class="anchor" href="#mediaplayers-and-file-modification-times" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mediaplayers and file modification times</h4>
 
 <p>Since file modification times are preserved, some players don't realize the
 changed genre metadata automatically and might require some manual steps, e.g.:</p>
@@ -497,7 +498,7 @@ changed genre metadata automatically and might require some manual steps, e.g.:<
 </ul>
 
 <h4>
-<a id="debug-tag-handling--improve-tag-results" class="anchor" href="#debug-tag-handling--improve-tag-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Debug tag handling / Improve tag results</h4>
+<a id="debug-tag-handling--improve-tag-results" class="anchor" href="#debug-tag-handling--improve-tag-results" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Debug tag handling / Improve tag results</h4>
 
 <p>In order to debug tag handling to improve the whitelist and tagsfile, you can
 do a debug dry run and save the output to a logfile (adjust path):</p>
@@ -515,7 +516,7 @@ do a debug dry run and save the output to a logfile (adjust path):</p>
 <p>Feel free to share your improvements to the <a href="wlg/data">data/*.txt</a> files or
 send me your logfile so i can use it for debugging myself.</p>
 
-<p>Another way to find possbile aliases is using the difflib <code>-d</code> argument.</p>
+<p>Another way to find possible aliases is using the difflib <code>-d</code> argument.</p>
 
 <p>Please report any bugs and errors, i would like to fix them :)</p>
 
