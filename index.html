@@ -38,7 +38,7 @@
 
 <ul>
 <li>Supported audio files: flac, ogg, mp3, m4a</li>
-<li>Supported music sites: Discogs, EchoNest, Last.FM, MusicBrainz, RateYourMusic, What.CD</li>
+<li>Supported music sites: Discogs, Last.FM, MusicBrainz, What.CD</li>
 <li>Feature Overview
 
 <ul>
@@ -83,7 +83,7 @@ explained" below for more details.</p>
 <h5>
 <a id="tag-scoring-with-countsweights" class="anchor" href="#tag-scoring-with-countsweights" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tag scoring with counts/weights</h5>
 
-<pre><code>echonest terms, lastfm, mbrainz, whatcd artist
+<pre><code>lastfm, mbrainz, whatcd artist
 </code></pre>
 
 <p>If counts are supplied for the tags they will get scored by <code>count/topcount</code>,
@@ -94,7 +94,7 @@ a score of <code>0.5</code> and so on.</p>
 <h5>
 <a id="tag-scoring-without-countsweights" class="anchor" href="#tag-scoring-without-countsweights" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tag scoring without counts/weights</h5>
 
-<pre><code> discogs, echonest genres, rymusic, whatcd album
+<pre><code> discogs, whatcd album
 </code></pre>
 
 <p>Tags supplied without a count will be scored <code>max(1/3, 0.85^(n-1))</code>, where <code>n</code>
@@ -174,10 +174,6 @@ cloned/extracted to</li>
 <code>rauth</code> is required for Discogs. If you want to use Discogs, install <code>rauth</code>
 with pip like above and activate <code>discogs</code> in the config file (see below).</li>
 <li>
-<code>lxml</code> is required for RateYourMusic. If you want to use RateYourMusic,
-install <code>lxml</code> with pip like above and activate <code>rymusic</code> in the config file
-(see below).</li>
-<li>
 <code>requests-cache</code> can additionally cache the raw queries from requests if
 installed. This is mainly a developers feature.</li>
 </ul>
@@ -192,7 +188,7 @@ installed. This is mainly a developers feature.</li>
 <a id="example-configuration-file" class="anchor" href="#example-configuration-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example configuration file</h3>
 
 <pre><code>[wlg]
-sources = discogs, echonest, lastfm, mbrainz, whatcd
+sources = discogs, lastfm, whatcd
 whitelist =
 tagsfile =
 vaqueries = True
@@ -206,10 +202,8 @@ various = 0.66
 splitup = 0.33
 minimum = 0.10
 src_discogs = 1.00
-src_echonest = 1.00
 src_lastfm = 0.66
 src_mbrainz = 0.66
-src_rymusic = 1.33
 src_whatcd = 1.50
 [discogs]
 token =
@@ -247,14 +241,6 @@ session =
 </td>
 </tr>
 <tr>
-<td><a href="http://echonest.com">echonest</a></td>
-<td align="center">1</td>
-<td align="center">0</td>
-<td align="center">0</td>
-<td>
-<a href="http://developer.echonest.com/docs/v4/">genres/terms</a> with and w/o counts</td>
-</tr>
-<tr>
 <td><a href="http://last.fm">lastfm</a></td>
 <td align="center">1</td>
 <td align="center">1</td>
@@ -266,14 +252,7 @@ session =
 <td align="center">1</td>
 <td align="center">1</td>
 <td align="center">0</td>
-<td>home of mbids</td>
-</tr>
-<tr>
-<td><a href="http://rateyourmusic.com">rymusic</a></td>
-<td align="center">1</td>
-<td align="center">1</td>
-<td align="center">0</td>
-<td>no real api (slow)</td>
+<td>home of mbids (overstrained)</td>
 </tr>
 <tr>
 <td><a href="https://what.cd">whatcd</a></td>
